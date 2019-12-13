@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -56,7 +58,7 @@ public class Main {
             AvailabilityDetails availabilityDetails = new AvailabilityDetails(
                         new SimpleDateFormat("yyyy-MM-dd").parse("2019-04-15"), 
                         new SimpleDateFormat("yyyy-MM-dd").parse("2019-04-20"), 
-                        new HotelDetails("24", "","",0,null,""));
+                        new HotelDetails("19", "","",0,null,""));
             
             /*CONNECTING BOOKING CLIENT RMI*/
             IBooking bookingClient = (IBooking) Naming.lookup("//localhost/Booking");
@@ -71,10 +73,18 @@ public class Main {
             /*CREATE AND PROCESS CAR DATA*/
             List<CarDetails> list = carClient.getAvailableCars(availabilityDetails);
             
+            JSONArray jsonArr = new JSONArray();
+            
             for(CarDetails carD : list)
             {
-                System.out.println(carD.getLicensePlate());
+                JSONObject jsonCar = new JSONObject();
+                jsonCar.put("license", carD.getLicensePlate());
+                jsonCar.put("type", carD.getCarType().getName());
+                jsonCar.put("seats", carD.getCarType().getNumberOfSeats());
+                jsonCar.put("price", carD.getCarType().getPricePerDay());
+                jsonArr.put(jsonCar);
             }
+                System.out.println(jsonArr.toString());
             
             
         } catch (NotBoundException | MalformedURLException | RemoteException | ParseException ex) {
