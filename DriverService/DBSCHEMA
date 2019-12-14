@@ -1,0 +1,32 @@
+Driver
+    DriverID
+    Name
+    DateOfBirth
+    LicenseNumber
+
+Workday
+    WorkdayID
+    Name
+
+Driver_Workday
+    DriverID
+    WorkdayID
+
+Application
+    ApplicationID
+    Name
+    DateOfBirth
+    LicenseNumber
+    Accepted
+
+Application_Workday
+    ApplicationID
+    WorkdayID
+
+Booking
+    BookingID
+    DriverID
+    From
+    To
+
+
