@@ -1,32 +1,44 @@
-Driver
-    DriverID
-    Name
-    DateOfBirth
-    LicenseNumber
+CREATE SCHEMA DriverService;
 
-Workday
-    WorkdayID
-    Name
-
-Driver_Workday
-    DriverID
-    WorkdayID
-
-Application
-    ApplicationID
-    Name
-    DateOfBirth
-    LicenseNumber
-    Accepted
-
-Application_Workday
-    ApplicationID
-    WorkdayID
-
-Booking
-    BookingID
-    DriverID
-    From
-    To
+USE DriverService;
 
 
+DROP TABLE IF EXISTS Booking;
+DROP TABLE IF EXISTS Workday;
+DROP TABLE IF EXISTS Application;
+DROP TABLE IF EXISTS Application_Workday;
+
+
+CREATE TABLE Workday (
+	WorkdayId INT NOT NULL,
+	Name VARCHAR(50) NOT NULL,
+	PRIMARY KEY(WorkdayId)
+);
+
+CREATE TABLE Application (
+	ApplicationId INT AUTO_INCREMENT NOT NULL,
+	Name VARCHAR(100) NOT NULL,
+	DateOfBirth Date NOT NULL,
+	LicenseNumber VARCHAR(20) NOT NULL,
+    Accepted BIT(1) DEFAULT(0),
+	PRIMARY KEY(ApplicationId)
+);
+	
+CREATE TABLE Application_Workday (
+	ApplicationId INT NOT NULL,
+	WorkdayId INT NOT NULL,
+	FOREIGN KEY (ApplicationId) REFERENCES Application(ApplicationId),
+	FOREIGN KEY (WorkdayId) REFERENCES Workday(WorkdayId),
+	PRIMARY KEY(ApplicationId,WorkdayId)
+);
+
+CREATE TABLE Booking (	
+	BookingId INT AUTO_INCREMENT NOT NULL,
+    ApplicationId INT NOT NULL,
+	FromTime DateTime NOT NULL,
+	ToTime DateTime NOT NULL,
+	FOREIGN KEY (ApplicationId) REFERENCES Application(ApplicationId),
+	PRIMARY KEY(BookingId)
+);
+
+INSERT INTO Workday(WorkdayId,Name) VALUES (0,'Sunday'),(1,'Monday'),(2,'Tuesday'),(3,'Wednesday'),(4,'Thursday'),(5,'Friday'),(6,'Sunday')
