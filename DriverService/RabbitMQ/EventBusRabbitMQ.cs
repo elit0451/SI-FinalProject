@@ -64,7 +64,7 @@ namespace DriverService.RabbitMQ
                 var query = new ApplicationQuery(Db);
                 var result = await query.FindAvailableDrivers(new DateTime(2010,06,26), new DateTime(2010,06,27));
 
-                PublishFoundDrivers("drivers.found", result);
+                PublishFoundDrivers("driver.found", result);
             }
         }
         public void PublishFoundDrivers(string _queueName, List<Application> drivers)
