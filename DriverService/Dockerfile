@@ -4,4 +4,6 @@ WORKDIR /app
 
 COPY ./publish .
 
+EXPOSE 5002
+
 ENTRYPOINT ["dotnet", "DriverService.dll"]
