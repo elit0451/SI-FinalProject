@@ -11,6 +11,7 @@ nbactions.xml
 
 # Persistence unit
 persistence.xml
+
 # User-specific stuff
 /.idea
 .idea/**/workspace.xml
@@ -178,8 +179,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# End of https://www.gitignore.io/api/java,macos,windows,netbeans,intellij
+
 # VScode
 /.settings
 
-# End of https://www.gitignore.io/api/java,macos,windows,netbeans,intellij
 /target/ 
