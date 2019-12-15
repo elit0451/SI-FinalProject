@@ -32,7 +32,7 @@ namespace EventService
 
                 var factory = new ConnectionFactory()
                 {
-                    HostName = "localhost"
+                    HostName = "rabbitmq"
                 };
 
                 return new RabbitMQPersistentConnection(factory, db);

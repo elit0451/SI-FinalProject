@@ -32,7 +32,7 @@ namespace EventService.RabbitMQ
             }
 
             Db = db;
-            _eventBusRabbitMQ = new EventBusRabbitMQ(this, Db, "driver.find");
+            _eventBusRabbitMQ = new EventBusRabbitMQ(this, Db, "event.update");
         }
 
         public void CreateConsumerChannel()

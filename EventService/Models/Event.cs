@@ -41,6 +41,27 @@ namespace EventService.Models
             await applicationCmd.ExecuteNonQueryAsync();
         }
 
+        public async Task UpdateAsync()
+        {
+            using var cmd = Db.Connection.CreateCommand();
+            cmd.CommandText = @"UPDATE `Event` 
+                SET `Location` = @location, `DriverName` = @drivername, `DriveFrom` = @drivefrom, `DateFrom` = @datefrom, `DateTo` = @dateto, `NumberOfPeople` = @numberofpeople, `EventTypeId` = @eventtypeid, `ResponsibleName` = @responsiblename, `ResponsiblePhoneNr` = @responsiblephonenr, `Notes` = @notes 
+                WHERE `EventId` = @eventid;";
+            BindParams(cmd);
+            BindId(cmd);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        private void BindId(MySqlCommand cmd)
+        {
+            cmd.Parameters.Add(new MySqlParameter
+            {
+                ParameterName = "@eventid",
+                DbType = DbType.Int32,
+                Value = EventId,
+            });
+        }
+
         private void BindParams(MySqlCommand cmd)
         {
             cmd.Parameters.Add(new MySqlParameter

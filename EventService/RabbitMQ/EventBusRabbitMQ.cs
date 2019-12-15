@@ -91,19 +91,15 @@ namespace EventService.RabbitMQ
 
         private async void ReceivedEvent(object sender, BasicDeliverEventArgs e)
         {
-            /*if (e.RoutingKey == "driver.find")
+            if (e.RoutingKey == "event.update")
             {
                 var message = Encoding.UTF8.GetString(e.Body);
-                JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
-                DateTime from = receivedObj["from"].Value<DateTime>();
-                DateTime to = receivedObj["to"].Value<DateTime>();
+                Event receivedObj = JsonConvert.DeserializeObject<Event>(message);
 
                 await Db.Connection.OpenAsync();
-                var query = new RatingQuery(Db);
-                var result = new List<Rating>();//await query.FindAvailableDrivers(new DateTime(2010,06,26), new DateTime(2010,06,27));
-
-                PublishFoundDrivers("driver.found", result);
-            }*/
+                receivedObj.Db = Db;
+                await receivedObj.UpdateAsync();
+            }
         }
 
         public void PublishMessage(string _queueName, string message)
