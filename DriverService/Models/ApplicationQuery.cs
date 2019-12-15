@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
@@ -28,11 +27,12 @@ namespace DriverService.Models
                                     AND a.ApplicationId NOT IN 
                                         (SELECT ApplicationId 
                                         FROM Booking 
-                                        WHERE COALESCE(FromTime BETWEEN '2010-06-26' AND '2010-06-27', FALSE) 
-                                            OR COALESCE(ToTime BETWEEN '2010-06-15' AND '2010-06-20', FALSE))
+                                        WHERE COALESCE(FromTime BETWEEN @from AND @to, FALSE) 
+                                            OR COALESCE(ToTime BETWEEN @from AND @to, FALSE))
                                 GROUP BY a.ApplicationId
                                 HAVING COUNT(DISTINCT WorkdayId) = @workdaycount";
 
+            // TODO: Convert dates to days of the week
             var intArr = new List<int>(){0,1,2,3};
             cmd.Parameters.Add(new MySqlParameter
             {
@@ -122,7 +122,7 @@ namespace DriverService.Models
 
         private async Task<List<Application>> ReadAllDriversAsync(DbDataReader reader)
         {
-            var applications = new Dictionary<int, Application>();
+            var applications = new List<Application>();
             using (reader)
             {
                 while (await reader.ReadAsync())
@@ -137,18 +137,11 @@ namespace DriverService.Models
                         Accepted = reader.GetBoolean(4),
                     };
 
-                    if (applications.ContainsKey(application.ApplicationID))
-                        applications[application.ApplicationID].WeekDays.AddRange(application.WeekDays);
-                    else
-                        applications.Add(application.ApplicationID, application);
+                    applications.Add(application);
                 }
             }
-
-            List<Application> returnList = new List<Application>();
-            returnList.AddRange(applications.Values);
-
-            return returnList;
+            
+            return applications;
         }
-        
     }
 }
