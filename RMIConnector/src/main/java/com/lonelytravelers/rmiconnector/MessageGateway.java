@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lonelytravelers.rmiconnector;
 
 import com.rabbitmq.client.AMQP.BasicProperties;
@@ -15,10 +10,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Kast
- */
 public class MessageGateway {
         private static  ConnectionFactory factory;
         private static Connection requestConnection;
