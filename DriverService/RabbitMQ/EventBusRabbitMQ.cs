@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using DriverService.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -15,9 +14,7 @@ namespace DriverService.RabbitMQ
         private readonly IRabbitMQPersistentConnection _persistentConnection;
         private IModel _consumerChannel;
         private string _queueName;
-
         private AppDb Db;
-
 
         public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, AppDb db, string queueName = null)
         {
@@ -39,7 +36,6 @@ namespace DriverService.RabbitMQ
             var consumer = new EventingBasicConsumer(channel);
 
             consumer.Received += ReceivedEvent;
-
 
 
             channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);

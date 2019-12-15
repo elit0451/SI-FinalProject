@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DriverService.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace DriverService.Controllers
 {
@@ -18,7 +14,7 @@ namespace DriverService.Controllers
         {
             Db = db;
         }
-
+        
 
         [HttpPost]
         public async Task<IActionResult> AddNewApplication(Application application)
