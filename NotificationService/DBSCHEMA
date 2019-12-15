@@ -1,0 +1,8 @@
+CREATE SCHEMA NotificationService;
+USE NotificationService;
+
+DROP TABLE IF EXISTS Notification;
+
+CREATE TABLE Notification (
+	
+);
