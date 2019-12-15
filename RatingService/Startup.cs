@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace RatingService
 {
@@ -22,10 +15,15 @@ namespace RatingService
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // Being called by runtime
+        // Used to add services to the controller
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // configuration located in appsettings.json
+            AppDb db = new AppDb(Configuration["ConnectionStrings:DefaultConnection"]);
+            services.AddTransient<AppDb>(_ => db);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
