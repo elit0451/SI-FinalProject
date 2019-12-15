@@ -37,7 +37,6 @@ namespace RatingService
                 JObject msgObj = JsonConvert.DeserializeObject<JObject>(message);
                 msgObj["correlationId"] = ea.BasicProperties.CorrelationId;
                 msgObj["replyTo"] = ea.BasicProperties.ReplyTo;
-                Console.WriteLine(" [x] Corr {0}", ea.BasicProperties.CorrelationId);
 
                 await CommandRouter.RouteAsync(msgObj.ToString());
 
@@ -59,7 +58,7 @@ namespace RatingService
                 basicProperties: replyProps,
                 body: responseBytes);
             
-            Console.WriteLine("Published!");
+            Console.WriteLine("Published to {0}", replyTo);
         }
     }
 }
