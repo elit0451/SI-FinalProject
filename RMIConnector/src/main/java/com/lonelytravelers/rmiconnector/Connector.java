@@ -50,7 +50,7 @@ public class Connector {
             
             
             /*CONNECTING BOOKING CLIENT RMI*/
-            IBooking bookingClient = (IBooking) Naming.lookup("//legacy/Booking");
+            IBooking bookingClient = (IBooking) Naming.lookup("rmi://legacy:1099/Booking");
             
             
             /*CREATE ADD BOOKING REQUEST AND PROCESSING*/
@@ -74,7 +74,7 @@ public class Connector {
 
             
             /*CONNECTING CAR CLIENT RMI*/
-            ICars carClient = (ICars) Naming.lookup("//legacy/Cars");
+            ICars carClient = (ICars) Naming.lookup("rmi://legacy:1099/Cars");
             
             /*CREATE AND PROCESS CAR DATA*/
             List<CarDetails> list = carClient.getAvailableCars(availabilityDetails);
@@ -90,6 +90,7 @@ public class Connector {
                 jsonArr.put(jsonCar);
             }            
         } catch (NotBoundException | MalformedURLException | RemoteException | ParseException  ex) {
+            System.out.println("GOT EXCEPTION: " + ex.getMessage());
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
         
