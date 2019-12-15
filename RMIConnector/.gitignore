@@ -9,9 +9,6 @@ backend.iml
 
 nbactions.xml
 
-# Persistence unit
-persistence.xml
-
 # User-specific stuff
 /.idea
 .idea/**/workspace.xml
