@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lonelytravelers.rmiconnector;
 
 import DTOs.AvailabilityDetails;
@@ -10,7 +5,6 @@ import DTOs.CarDetails;
 import DTOs.CarTypeDetails;
 import DTOs.DriverDetails;
 import DTOs.HotelDetails;
-import DTOs.Identifiers.StationIdentifier;
 import DTOs.NewBookingDetails;
 import interfaces.IBooking;
 import interfaces.ICars;
@@ -25,12 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import java.util.Date;
 
-/**
- *
- * @author Kast
- */
 public class Connector {
     public static void addNewBooking(String pickUpTime, String deliveryTime, String pickUpPlace, String deliveryPlace, String driverId, String carId)
     {
