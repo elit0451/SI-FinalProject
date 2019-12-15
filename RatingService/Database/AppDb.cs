@@ -19,7 +19,7 @@ namespace RatingService.Database
 
         private AppDb()
         {
-            Connection = new MySqlConnection("server=localhost;user id=root;password=soft2019Backend;port=3306;database=RatingService;");
+            Connection = new MySqlConnection("server=mysql;user id=root;password=soft2019Backend;port=3306;database=RatingService;");
         }
 
         public void Dispose() => Connection.Dispose();
