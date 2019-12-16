@@ -9,6 +9,9 @@ namespace LoggerService
             MessageGateway.ReceiveQueue("logger","info");
             MessageGateway.ReceiveQueue("logger","warning");
             MessageGateway.ReceiveQueue("logger","critical");
+            Console.WriteLine("Running");
+            while(true)
+            {}
         }
     }
 }
