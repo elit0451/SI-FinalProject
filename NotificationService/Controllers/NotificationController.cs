@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using NotificationService.DTOs;
 using NotificationService.Models;
 
 namespace NotificationService.Controllers
@@ -27,9 +29,28 @@ namespace NotificationService.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetNotifications(int id)
         {
+            List<NotificationDTO> resultOfDTOs = new List<NotificationDTO>();
+
             await Db.Connection.OpenAsync();
             var query = new NotificationQuery(Db);
             var result = await query.GetAllAsync(id);
+
+            foreach(Notification notification in result)
+                resultOfDTOs.Add(notification.ConvertToDTO());
+                
+            return new OkObjectResult(resultOfDTOs);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> AcceptApplication(int id)
+        {
+            await Db.Connection.OpenAsync();
+            var query = new NotificationQuery(Db);
+            var result = await query.FindOneAsync(id);
+            if (result is null)
+                return new NotFoundResult();
+            result.MarkedRead = true;
+            await result.UpdateAsync();
             return new OkObjectResult(result);
         }
     }

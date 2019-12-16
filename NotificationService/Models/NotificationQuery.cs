@@ -15,9 +15,21 @@ namespace NotificationService.Models
             Db = db;
         }
 
-        
+        public async Task<Notification> FindOneAsync(int id)
+        {
+            using var cmd = Db.Connection.CreateCommand();
+            cmd.CommandText = @"SELECT * FROM Notification WHERE NotificationId = @notificationid;";
+            cmd.Parameters.Add(new MySqlParameter
+            {
+                ParameterName = "@notificationid",
+                DbType = DbType.Int32,
+                Value = id,
+            });
+            var result = await ReallAllNotificationsAsync(await cmd.ExecuteReaderAsync());
+            return result.Count > 0 ? result[0] : null;
+        }
 
-        public async Task<List<NotificationDTO>> GetAllAsync(int id)
+        public async Task<List<Notification>> GetAllAsync(int id)
         {
             var cmd = Db.Connection.CreateCommand();
             cmd.CommandText = @"SELECT * FROM Notification WHERE EventId = @eventid;";
@@ -31,9 +43,9 @@ namespace NotificationService.Models
             return result.Count > 0 ? result : null;
         }
 
-        private async Task<List<NotificationDTO>> ReallAllNotificationsAsync(DbDataReader reader)
+        private async Task<List<Notification>> ReallAllNotificationsAsync(DbDataReader reader)
         {
-            List<NotificationDTO> returnList = new List<NotificationDTO>();
+            List<Notification> returnList = new List<Notification>();
             using (reader)
             {
                 while (await reader.ReadAsync())
@@ -46,15 +58,8 @@ namespace NotificationService.Models
                         MarkedRead = reader.GetBoolean(3)
                     };
 
-                    if(!notification.MarkedRead)
-                    {
-                        var notificationDTO = new NotificationDTO(Db)
-                        {
-                            NotificationId = notification.NotificationId,
-                            Content = notification.Content
-                        };
-                        returnList.Add(notificationDTO);
-                    }
+                    if (!notification.MarkedRead)
+                        returnList.Add(notification);
                 }
             }
 

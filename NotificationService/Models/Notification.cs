@@ -1,6 +1,7 @@
 using System.Data;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using NotificationService.DTOs;
 
 namespace NotificationService.Models
 {
@@ -68,6 +69,15 @@ namespace NotificationService.Models
                 DbType = DbType.Boolean,
                 Value = MarkedRead,
             });
+        }
+
+        public NotificationDTO ConvertToDTO()
+        {
+            return new NotificationDTO()
+            {
+                NotificationId = this.NotificationId,
+                Content = this.Content
+            };
         }
     }
 }
