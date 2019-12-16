@@ -10,5 +10,6 @@ namespace LoggerService.Model
     {
         public LogLevel Level { get; set; }
         public string Message { get; set; }    
+        public string Service { get; set; }    
     }
 }
