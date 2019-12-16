@@ -8,41 +8,83 @@ namespace CreationService
 {
     internal static class CommandRouter
     {
-        internal static async Task RouteAsync(string message)
+        internal static void Route(string message)
         {
             JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
             string command = receivedObj["command"].Value<string>();
-            int eventId = receivedObj["EventId"].Value<int>();
-            string correlationId = receivedObj["correlationId"].Value<string>();
-            string replyTo = receivedObj["replyTo"].Value<string>();
 
             switch (command)
             {
                 case "add":
+                    int eventId = receivedObj["EventId"].Value<int>();
                     string location = receivedObj["Location"].Value<string>();
                     string driveFrom = receivedObj["DriveFrom"].Value<string>();
                     DateTime dateFrom = receivedObj["DateFrom"].Value<DateTime>();
                     DateTime dateTo = receivedObj["DateTo"].Value<DateTime>();
 
-                    Event rating = new Event()
+                    Event eventObj = new Event()
                     {
                         EventId = eventId,
                         Location = location,
                         DriveFrom = driveFrom,
-                        DateFrom  = dateFrom,
+                        DateFrom = dateFrom,
                         DateTo = dateTo
                     };
 
-                    MessageGateway.PublishRPC()
-                    break;
-                case "get":
-                    await AppDb.Instance.Connection.OpenAsync();
-                    RatingQuery query = new RatingQuery(AppDb.Instance);
-                    Rating foundRating = await query.FindOneAsync(eventId);
+                    EventRequest r = new EventRequest(Guid.NewGuid(), eventObj);
+                    EventRequestRepository.Instance.AddRequest(r);
 
-                    if(!(foundRating is null))
-                        // Convert to JSON without a command
-                        MessageGateway.PublishRPC(replyTo, correlationId, foundRating.ConvertToJson(""));
+                    JObject requestCar = new JObject();
+                    requestCar["from"] = dateFrom;
+                    requestCar["to"] = dateTo;
+                    requestCar["stationId"] = driveFrom;
+                    requestCar["command"] = "getAvailableCars";
+                    requestCar["requestId"] = r.RequestId;
+
+                    JObject requestDriver = new JObject();
+                    requestDriver["from"] = dateFrom;
+                    requestDriver["to"] = dateTo;
+                    requestDriver["requestId"] = r.RequestId;
+
+
+                    MessageGateway.PublishMessage("connector.requests", requestCar.ToString());
+                    MessageGateway.PublishMessage("driver.find", requestDriver.ToString());
+                    break;
+
+                case "carFound":
+                    {
+                        string requestId = receivedObj["requestId"].Value<string>();
+                        JArray cars = receivedObj["cars"].Value<JArray>();
+                        string license = cars[0]["license"].Value<string>();
+
+
+                        EventRequest eventRequest = EventRequestRepository.Instance.GetRequest(Guid.Parse(requestId));
+
+                        JObject response = new JObject();
+                        response["EventId"] = eventRequest.Event.EventId;
+                        response["command"] = "car";
+                        response["license"] = license;
+
+                        MessageGateway.PublishMessage("event.update", response.ToString());
+                    }
+                    break;
+
+                case "driverFound":
+                    {
+                        string requestId = receivedObj["requestId"].Value<string>();
+                        JArray drivers = receivedObj["drivers"].Value<JArray>();
+                        string driverName = drivers[0]["Name"].Value<string>();
+
+
+                        EventRequest eventRequest = EventRequestRepository.Instance.GetRequest(Guid.Parse(requestId));
+
+                        JObject response = new JObject();
+                        response["EventId"] = eventRequest.Event.EventId;
+                        response["command"] = "car";
+                        response["driverName"] = driverName;
+
+                        MessageGateway.PublishMessage("event.update", response.ToString());
+                    }
                     break;
                 default:
                     Console.WriteLine("No such command");

@@ -14,51 +14,45 @@ namespace CreationService
         private static IModel channel;
         static MessageGateway()
         {
-            factory = new ConnectionFactory() { HostName = "rabbitmq" };
+            factory = new ConnectionFactory() { HostName = "localhost" };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
         }
 
-        internal static void ReceiveEvent()
+        internal static void ReceiveQueue(string queueName, EventHandler<BasicDeliverEventArgs> receivedMethod)
         {
-            channel.QueueDeclare(queue: "event.add",
+            channel.QueueDeclare(queue: queueName,
                                  durable: false,
                                  exclusive: false,
                                  autoDelete: false,
                                  arguments: null);
 
             var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += async (model, ea) =>
-            {
-                var body = ea.Body;
-                var message = Encoding.UTF8.GetString(body);
-                Console.WriteLine(" [x] Received {0}", message);
-
-                JObject msgObj = JsonConvert.DeserializeObject<JObject>(message);
-                msgObj["correlationId"] = ea.BasicProperties.CorrelationId;
-                msgObj["replyTo"] = ea.BasicProperties.ReplyTo;
-
-                await CommandRouter.RouteAsync(msgObj.ToString());
-
-            };
-            channel.BasicConsume(queue: "event.feedback",
+            consumer.Received += receivedMethod;
+                
+            channel.BasicConsume(queue: queueName,
                                  autoAck: true,
                                  consumer: consumer);
         }
 
-        internal static void PublishRPC(string replyTo, string correlationId, string rating)
+        internal static void PublishMessage(string queueName, string message)
         {
-            var responseBytes = Encoding.UTF8.GetBytes(rating);
-            var replyProps = channel.CreateBasicProperties();
-            replyProps.CorrelationId = correlationId;
 
+            channel.QueueDeclare(queue: queueName,
+                                 durable: false,
+                                 exclusive: false,
+                                 autoDelete: false,
+                                 arguments: null);
+
+
+            var body = Encoding.UTF8.GetBytes(message); 
+
+            Console.WriteLine("Publishing to: " + queueName + " - Message: \n" + message);
             channel.BasicPublish(
                 exchange: "", 
-                routingKey: replyTo, 
-                basicProperties: replyProps,
-                body: responseBytes);
-            
-            Console.WriteLine("Published to {0}", replyTo);
+                routingKey: queueName, 
+                basicProperties: null,
+                body: body);
         }
     }
 }

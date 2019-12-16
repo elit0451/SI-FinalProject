@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RabbitMQ.Client.Events;
 
 namespace CreationService
 {
@@ -6,9 +10,26 @@ namespace CreationService
     {
         static void Main(string[] args)
         {
-            MessageGateway.ReceiveEvent();
+            new Program().Run();
+        }
+
+        private void Run()
+        {
+            MessageGateway.ReceiveQueue("event.add", ReceivedEvent);
+            MessageGateway.ReceiveQueue("cars.available", ReceivedEvent);
+            MessageGateway.ReceiveQueue("driver.found", ReceivedEvent);
+
             Console.WriteLine("Running");
             while (true) { }
+        }
+
+        void ReceivedEvent(object sender, BasicDeliverEventArgs ea)
+        {
+            var body = ea.Body;
+            var message = Encoding.UTF8.GetString(body);
+            Console.WriteLine(" [x] Received {0}", message);
+
+            CommandRouter.Route(message);
         }
     }
 }
