@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY ./publish .
 
-ENTRYPOINT ["dotnet", "CreationService.dll"]
+ENTRYPOINT ["dotnet", "LoggerService.dll"]
