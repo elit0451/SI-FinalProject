@@ -9,6 +9,7 @@ namespace NotificationService.Models
         public int NotificationId { get; set; }
         public int EventId { get; set; }
         public string Content { get; set; }
+        public bool MarkedRead { get; set; }
         internal AppDb Db { get; set; }
 
         public Notification() { }
@@ -27,6 +28,24 @@ namespace NotificationService.Models
 
             NotificationId = (int) applicationCmd.LastInsertedId;
         }
+        public async Task UpdateAsync()
+        {
+            var cmd = Db.Connection.CreateCommand();
+            cmd.CommandText = @"UPDATE `Notification` SET `MarkedRead` = @markedread WHERE `NotificationId` = @notificationid;";
+            BindParams(cmd);
+            BindId(cmd);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        private void BindId(MySqlCommand cmd)
+        {
+            cmd.Parameters.Add(new MySqlParameter
+            {
+                ParameterName = "@notificationid",
+                DbType = DbType.Int32,
+                Value = NotificationId,
+            });
+        }
         private void BindParams(MySqlCommand command)
         {
             command.Parameters.Add(new MySqlParameter
@@ -41,6 +60,13 @@ namespace NotificationService.Models
                 ParameterName = "@content",
                 DbType = DbType.String,
                 Value = Content,
+            });
+
+            command.Parameters.Add(new MySqlParameter
+            {
+                ParameterName = "@markedread",
+                DbType = DbType.Boolean,
+                Value = MarkedRead,
             });
         }
     }
