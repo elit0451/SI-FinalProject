@@ -37,7 +37,7 @@ namespace EventService.Controllers
         {
             JObject request = new JObject();
             request["command"] = "get";
-            request["id"] = id;
+            request["EventId"] = id;
 
             string result = rabbitMQ.RPCRequest("event.feedback", request.ToString());
 
