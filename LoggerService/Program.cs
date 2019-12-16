@@ -6,7 +6,9 @@ namespace LoggerService
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            MessageGateway.ReceiveQueue("logger","info");
+            MessageGateway.ReceiveQueue("logger","warning");
+            MessageGateway.ReceiveQueue("logger","critical");
         }
     }
 }
