@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY ./publish .
 
-ENTRYPOINT ["dotnet", "RatingService.dll"]
+ENTRYPOINT ["dotnet", "CreationService.dll"]
