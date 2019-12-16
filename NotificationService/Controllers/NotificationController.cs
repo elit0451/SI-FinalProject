@@ -24,14 +24,13 @@ namespace NotificationService.Controllers
             return new OkObjectResult(notification);
         }
         
-        /*
-        [HttpGet]
-        public async Task<IActionResult> GetRating()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetNotifications(int id)
         {
             await Db.Connection.OpenAsync();
-            var query = new ApplicationQuery(Db);
-            var result = await query.GetAllAsync();
+            var query = new NotificationQuery(Db);
+            var result = await query.GetAllAsync(id);
             return new OkObjectResult(result);
-        } */
+        }
     }
 }
