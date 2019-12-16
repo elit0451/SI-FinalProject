@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using NotificationService.Models;
 
 namespace NotificationService.Controllers
 {
@@ -13,15 +15,16 @@ namespace NotificationService.Controllers
             Db = db;
         }
 
-        /* [HttpPost]
-        public async Task<IActionResult> AddNewRating(Rating rating)
+        [HttpPost]
+        public async Task<IActionResult> AddNewNotification(Notification notification)
         {
             await Db.Connection.OpenAsync();
-            rating.Db = Db;
-            await rating.InsertAsync();
-            return new OkObjectResult(rating);
+            notification.Db = Db;
+            await notification.InsertAsync();
+            return new OkObjectResult(notification);
         }
-
+        
+        /*
         [HttpGet]
         public async Task<IActionResult> GetRating()
         {
