@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NotificationService.RabbitMQ;
+using RabbitMQ.Client;
 
 namespace NotificationService
 {
@@ -25,17 +28,17 @@ namespace NotificationService
             AppDb db = new AppDb(Configuration["ConnectionStrings:DefaultConnection"]);
             services.AddTransient<AppDb>(_ => db);
 
-            /* services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
                 var logger = sp.GetRequiredService<ILogger<IRabbitMQPersistentConnection>>();
 
                 var factory = new ConnectionFactory()
                 {
-                    HostName = "rabbitmq"
+                    HostName = "localhost"
                 };
 
                 return new RabbitMQPersistentConnection(factory, db);
-            }); */
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,18 +60,18 @@ namespace NotificationService
                 endpoints.MapControllers();
             });
 
-            //app.UseRabbitListener();
+            app.UseRabbitListener();
         }
     }
 
     // Nested class for initiallizing RabbitMQ on startup
-    /* public static class ApplicationBuilderExtentions
+     public static class ApplicationBuilderExtentions
     {
-        public static RabbitMQPersistentConnection Listener { get; set; }
+        public static IRabbitMQPersistentConnection Listener { get; set; }
 
         public static IApplicationBuilder UseRabbitListener(this IApplicationBuilder app)
         {
-            Listener = app.ApplicationServices.GetService<RabbitMQPersistentConnection>();
+            Listener = app.ApplicationServices.GetService<IRabbitMQPersistentConnection>();
             var life = app.ApplicationServices.GetService<Microsoft.Extensions.Hosting.IHostApplicationLifetime>();
             life.ApplicationStarted.Register(OnStarted);
 
@@ -78,12 +81,13 @@ namespace NotificationService
 
         private static void OnStarted()
         {
-            Listener.CreateConsumerChannel();
+            Listener.CreateConsumerChannel("event.add");
+            Listener.CreateConsumerChannel("event.update");
         }
 
         private static void OnStopping()
         {
             Listener.Disconnect();
         }
-    } */
+    }
 }
