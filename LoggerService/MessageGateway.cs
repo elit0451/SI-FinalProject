@@ -12,7 +12,7 @@ namespace LoggerService
         private static IModel channel;
         static MessageGateway()
         {
-            factory = new ConnectionFactory() { HostName = "localhost" };
+            factory = new ConnectionFactory() { HostName = "rabbitmq" };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
         }
