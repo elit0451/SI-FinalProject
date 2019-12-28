@@ -1,5 +1,3 @@
-
-using System;
 using System.Collections;
 using System.IO;
 using System.Text;
@@ -15,13 +13,13 @@ namespace LocationService.Controllers
     [Route("[controller]")]
     public class LocationController : ControllerBase
     {
-        private readonly string dataFolder;
+        private readonly string _dataFolder;
         private readonly IWebHostEnvironment _hostingEnvironment;
 
         public LocationController(IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
-            dataFolder = Path.Combine(_hostingEnvironment.ContentRootPath, "Data");
+            _dataFolder = Path.Combine(_hostingEnvironment.ContentRootPath, "Data");
         }
 
         [HttpGet]
@@ -30,15 +28,16 @@ namespace LocationService.Controllers
             IEnumerable records;
             string recordsJSON = "";
 
-            string fullPath = Path.Combine(dataFolder, "locations.csv");
+            string fullPath = Path.Combine(_dataFolder, "locations.csv");
 
             using (var reader = new StreamReader(fullPath, Encoding.UTF8))
-            using (var csv = new CsvReader(reader))
             {
-                records = csv.GetRecords<Location>();
-                recordsJSON = JsonConvert.SerializeObject(records).ToString();
+                using (var csv = new CsvReader(reader))
+                {
+                    records = csv.GetRecords<Location>();
+                    recordsJSON = JsonConvert.SerializeObject(records).ToString();
+                }
             }
-
             return new OkObjectResult(recordsJSON);
         }
     }
