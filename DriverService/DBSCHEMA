@@ -41,4 +41,4 @@ CREATE TABLE Booking (
 	PRIMARY KEY(BookingId)
 );
 
-INSERT INTO Workday(WorkdayId,Name) VALUES (0,'Sunday'),(1,'Monday'),(2,'Tuesday'),(3,'Wednesday'),(4,'Thursday'),(5,'Friday'),(6,'Sunday')
+INSERT INTO Workday(WorkdayId,Name) VALUES (0,'Sunday'),(1,'Monday'),(2,'Tuesday'),(3,'Wednesday'),(4,'Thursday'),(5,'Friday'),(6,'Saturday')
