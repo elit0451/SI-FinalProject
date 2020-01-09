@@ -16,24 +16,15 @@ namespace NotificationService.Controllers
         {
             Db = db;
         }
-
-        [HttpPost]
-        public async Task<IActionResult> AddNewNotification(Notification notification)
-        {
-            await Db.Connection.OpenAsync();
-            notification.Db = Db;
-            await notification.InsertAsync();
-            return new OkObjectResult(notification);
-        }
         
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetNotifications(int id)
+        [HttpGet("{eventId}")]
+        public async Task<IActionResult> GetNotifications(int eventId)
         {
             List<NotificationDTO> resultOfDTOs = new List<NotificationDTO>();
 
             await Db.Connection.OpenAsync();
             var query = new NotificationQuery(Db);
-            var result = await query.GetAllAsync(id);
+            var result = await query.GetAllAsync(eventId);
 
             foreach(Notification notification in result)
                 resultOfDTOs.Add(notification.ConvertToDTO());

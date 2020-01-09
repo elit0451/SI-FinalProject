@@ -45,30 +45,55 @@ namespace NotificationService.RabbitMQ
         {
             var notificationContent = "";
 
-            switch(e.RoutingKey)
+            switch (e.RoutingKey)
             {
                 case "event.add":
-                {
-                    var message = Encoding.UTF8.GetString(e.Body);
-                    JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
-                    int eventId = receivedObj["EventId"].Value<int>();
-                    string eventType = receivedObj["EventType"]["Name"].Value<string>();
-                    string dateFrom = (receivedObj["DateFrom"].Value<DateTime>()).ToString("dd/MM/yyyy");
-                    string dateTo = (receivedObj["DateTo"].Value<DateTime>()).ToString("dd/MM/yyyy");
-                    string location = receivedObj["Location"].Value<string>();
-                    
-                    notificationContent = $"{eventType} event was created for {dateFrom} to {dateTo} at {location}";
-
-                    await Db.Connection.OpenAsync();
-                    var notification = new Notification()
                     {
-                        EventId = eventId,
-                        Content = notificationContent,
-                        Db = Db
-                    };
-                    await notification.InsertAsync();
-                }
-                break;
+                        var message = Encoding.UTF8.GetString(e.Body);
+                        JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
+                        int eventId = receivedObj["EventId"].Value<int>();
+                        string eventType = receivedObj["EventType"]["Name"].Value<string>();
+                        string dateFrom = (receivedObj["DateFrom"].Value<DateTime>()).ToString("dd/MM/yyyy");
+                        string dateTo = (receivedObj["DateTo"].Value<DateTime>()).ToString("dd/MM/yyyy");
+                        string location = receivedObj["Location"].Value<string>();
+
+                        notificationContent = $"{eventType} event was created for {dateFrom} to {dateTo} at {location}";
+
+                        await Db.Connection.OpenAsync();
+                        var notification = new Notification()
+                        {
+                            EventId = eventId,
+                            Content = notificationContent,
+                            Db = Db
+                        };
+                        await notification.InsertAsync();
+                    }
+                    break;
+
+                case "event.update":
+                    {
+                        var message = Encoding.UTF8.GetString(e.Body);
+                        JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
+                        int eventId = receivedObj["EventId"].Value<int>();
+                        string command = receivedObj["cmd"].Value<string>().ToLower();
+                        string license = receivedObj["license"].Value<string>().ToLower();
+
+                        if (command == "car")
+                            notificationContent = $"Car with license number - {license} was added to the event";
+                        else if (command == "driver")
+                            notificationContent = $"Driver with license number - {license} was assigned to the event";
+
+
+                        await Db.Connection.OpenAsync();
+                        var notification = new Notification()
+                        {
+                            EventId = eventId,
+                            Content = notificationContent,
+                            Db = Db
+                        };
+                        await notification.InsertAsync();
+                    }
+                    break;
             }
         }
 
