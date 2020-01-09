@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 
 .DS_Store
 .vscode/
 db_data/
+=======
+.DS_Store
+.vscode/
+db_data/
+>>>>>>> master
