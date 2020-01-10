@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+# Start messaging broker
+    rabbitmq:
+        image: rabbitmq:3.6.5-management
+        ports:
+            - "5672:5672"
+            - "15672:15672" #Management Server
+    mysql:
+        restart: always
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: 'soft2019Backend' # TODO: Change this
+            MYSQL_USER: 'test'
+            MYSQL_PASS: 'pass'
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./db_data:/var/lib/mysql
+    #eventservice:
+    #    build: "./EventService"
+    #    ports:
+    #        - "5000:5002"
+    #    restart: always
+    #ratingservice:
+    #    build: "./RatingService"
+    #    restart: always
+    #creationservice:
+    #    build: "./CreationService"
+    #    restart: always
+    #driverservice:
+    #    build: "./DriverService"
+    #    ports:
+    #        - "5001:5002"
+    #    restart: always
+    #loggerservice:
+    #    build: "./LoggerService"
+    #    restart: always
+    locationservice:
+        build: "./LocationService"
+        ports:
+            - "5002:5002"
+        restart: always
+    #notificationservice:
+    #    build: "./NotificationService"
+    #    ports:
+    #        - "5003:5002"
+    #    restart: always
+    rmiconnector:
+        build: "./RMIConnector"
+        image: 'davi7816/testrmiconnector'
+        restart: always
+    legacy:
+        image: 'davi7816/testlegacy'
+        restart: always
