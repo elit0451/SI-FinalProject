@@ -1,0 +1,12 @@
+CREATE SCHEMA NotificationService;
+USE NotificationService;
+
+DROP TABLE IF EXISTS Notification;
+
+CREATE TABLE Notification (
+	NotificationId INT AUTO_INCREMENT NOT NULL,
+    EventId INT NOT NULL,
+	Content TEXT NOT NULL,
+	MarkedRead BIT(1) DEFAULT(0),
+	PRIMARY KEY(NotificationId)
+);
