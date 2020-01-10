@@ -1,6 +1,4 @@
 using System;
-using System.Data;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
 namespace CreationService.Models

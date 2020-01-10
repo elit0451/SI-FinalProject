@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RabbitMQ.Client.Events;
 
 namespace CreationService
