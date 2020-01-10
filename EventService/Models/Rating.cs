@@ -12,39 +12,6 @@ namespace EventService.Models
         public int EventId { get; set; }
         public int Feedback { get; set; }
 
-        internal AppDb Db { get; set; }
-
-        internal Rating(AppDb db)
-        {
-            Db = db;
-        }
-
-        public Rating() { }
-
-        public async Task InsertAsync()
-        {
-            using var applicationCmd = Db.Connection.CreateCommand();
-            applicationCmd.CommandText = @"INSERT INTO `Rating` (`EventId`, `Feedback`) VALUES (@eventid, @feedback);";
-            BindParams(applicationCmd);
-            await applicationCmd.ExecuteNonQueryAsync();
-        }
-
-        private void BindParams(MySqlCommand cmd)
-        {
-            cmd.Parameters.Add(new MySqlParameter
-            {
-                ParameterName = "@eventid",
-                DbType = DbType.Int32,
-                Value = EventId,
-            });
-            cmd.Parameters.Add(new MySqlParameter
-            {
-                ParameterName = "@feedback",
-                DbType = DbType.Int32,
-                Value = Feedback,
-            });
-        }
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (EventId <= 0)
