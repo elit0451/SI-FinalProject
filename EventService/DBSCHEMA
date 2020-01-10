@@ -1,0 +1,32 @@
+CREATE SCHEMA EventService;
+
+USE EventService;
+
+
+DROP TABLE IF EXISTS Event;
+DROP TABLE IF EXISTS EventType;
+
+
+CREATE TABLE EventType (
+	EventTypeId INT AUTO_INCREMENT NOT NULL,
+    Name VARCHAR(50) NOT NULL,
+    PRIMARY KEY (EventTypeId)
+);
+
+CREATE TABLE Event (
+    EventId INT AUTO_INCREMENT NOT NULL,
+    Location VARCHAR(50) NOT NULL,
+    DriverName VARCHAR(50) NOT NULL,
+    DriveFrom VARCHAR(50) NOT NULL,
+    DateFrom DATE NOT NULL,
+    DateTo DATE NOT NULL,
+    NumberOfPeople INT NOT NULL,
+    EventTypeId INT NOT NULL,
+    ResponsibleName VARCHAR(50) NOT NULL,
+    ResponsiblePhoneNr VARCHAR(15) NOT NULL,
+    Notes TEXT NOT NULL,
+	FOREIGN KEY (EventTypeId) REFERENCES EventType(EventTypeId),
+    PRIMARY KEY (EventId)
+);
+
+INSERT INTO EventType(Name) VALUES ('Social'),('Conference'),('Concert'),('Festival')
