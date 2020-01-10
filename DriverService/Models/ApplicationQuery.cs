@@ -32,8 +32,13 @@ namespace DriverService.Models
                                 GROUP BY a.ApplicationId
                                 HAVING COUNT(DISTINCT WorkdayId) = @workdaycount";
 
-            // TODO: Convert dates to days of the week
-            var intArr = new List<int>(){0,1,2,3};
+            // converting dates to days of the week
+            var intArr = new List<int>();
+            foreach(DateTime date in EachDay(from, to))
+            {
+                intArr.Add((int) date.DayOfWeek);
+            }
+
             cmd.Parameters.Add(new MySqlParameter
             {
                 ParameterName = "@workdays",
@@ -142,6 +147,12 @@ namespace DriverService.Models
             }
             
             return applications;
+        }
+
+        private IEnumerable<DateTime> EachDay(DateTime from, DateTime to)
+        {
+            for(var day = from.Date; day.Date <= to.Date; day = day.AddDays(1))
+                yield return day;
         }
     }
 }

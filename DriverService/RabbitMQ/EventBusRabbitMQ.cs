@@ -55,15 +55,21 @@ namespace DriverService.RabbitMQ
                 JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
                 DateTime from = receivedObj["From"].Value<DateTime>();
                 DateTime to = receivedObj["To"].Value<DateTime>();
+                string requestId = receivedObj["RequestId"].Value<string>();
 
                 await Db.Connection.OpenAsync();
                 var query = new ApplicationQuery(Db);
-                var result = await query.FindAvailableDrivers(new DateTime(2010,06,26), new DateTime(2010,06,27));
+                var result = await query.FindAvailableDrivers(from, to);
 
-                PublishFoundDrivers("driver.found", result);
+                JObject reply = new JObject();
+                reply.Add("RequestId", requestId);
+                reply.Add("Command", "driver.found");
+                reply.Add("Drivers", JToken.FromObject(result));
+
+                PublishFoundDrivers("driver.found", reply.ToString());
             }
         }
-        public void PublishFoundDrivers(string _queueName, List<Application> drivers)
+        public void PublishFoundDrivers(string _queueName, string message)
         {
 
             if (!_persistentConnection.IsConnected)
@@ -75,7 +81,6 @@ namespace DriverService.RabbitMQ
             {
 
                 channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
-                var message = JsonConvert.SerializeObject(drivers);
                 var body = Encoding.UTF8.GetBytes(message);
 
                 IBasicProperties properties = channel.CreateBasicProperties();
