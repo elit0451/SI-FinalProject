@@ -1,0 +1,22 @@
+name: deploy & setup containers
+on: [push]
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+         rm -rf SI-FinalProject
+         git clone https://github.com/elit0451/SI-FinalProject.git
+         cd SI-FinalProject
+         docker-compose build
+         docker-compose up -d
+         echo "All done."
