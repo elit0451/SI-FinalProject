@@ -75,8 +75,8 @@ namespace NotificationService.RabbitMQ
                         var message = Encoding.UTF8.GetString(e.Body);
                         JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
                         int eventId = receivedObj["EventId"].Value<int>();
-                        string command = receivedObj["cmd"].Value<string>().ToLower();
-                        string license = receivedObj["license"].Value<string>().ToLower();
+                        string command = receivedObj["Command"].Value<string>().ToLower();
+                        string license = receivedObj["License"].Value<string>().ToLower();
 
                         if (command == "car")
                             notificationContent = $"Car with license number - {license} was added to the event";

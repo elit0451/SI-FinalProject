@@ -72,10 +72,10 @@ public class Connector {
             for(CarDetails carD : list)
             {
                 JSONObject jsonCar = new JSONObject();
-                jsonCar.put("license", carD.getLicensePlate());
-                jsonCar.put("type", carD.getCarType().getName());
-                jsonCar.put("seats", carD.getCarType().getNumberOfSeats());
-                jsonCar.put("price", carD.getCarType().getPricePerDay());
+                jsonCar.put("License", carD.getLicensePlate());
+                jsonCar.put("Type", carD.getCarType().getName());
+                jsonCar.put("Seats", carD.getCarType().getNumberOfSeats());
+                jsonCar.put("Price", carD.getCarType().getPricePerDay());
                 jsonArr.put(jsonCar);
             }            
         } catch (NotBoundException | MalformedURLException | RemoteException | ParseException  ex) {

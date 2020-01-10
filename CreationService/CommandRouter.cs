@@ -10,7 +10,7 @@ namespace CreationService
         internal static void Route(string message)
         {
             JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
-            string command = receivedObj["command"].Value<string>();
+            string command = receivedObj["Command"].Value<string>();
 
             switch (command)
             {
@@ -34,16 +34,16 @@ namespace CreationService
                     EventRequestRepository.Instance.AddRequest(r);
 
                     JObject requestCar = new JObject();
-                    requestCar["from"] = dateFrom;
-                    requestCar["to"] = dateTo;
-                    requestCar["stationId"] = driveFrom;
-                    requestCar["command"] = "getAvailableCars";
-                    requestCar["requestId"] = r.RequestId;
+                    requestCar["From"] = dateFrom;
+                    requestCar["To"] = dateTo;
+                    requestCar["StationId"] = driveFrom;
+                    requestCar["Command"] = "getAvailableCars";
+                    requestCar["RequestId"] = r.RequestId;
 
                     JObject requestDriver = new JObject();
-                    requestDriver["from"] = dateFrom;
-                    requestDriver["to"] = dateTo;
-                    requestDriver["requestId"] = r.RequestId;
+                    requestDriver["From"] = dateFrom;
+                    requestDriver["To"] = dateTo;
+                    requestDriver["RequestId"] = r.RequestId;
 
 
                     MessageGateway.PublishMessage("connector.requests", requestCar.ToString());
@@ -52,17 +52,17 @@ namespace CreationService
 
                 case "carFound":
                     {
-                        string requestId = receivedObj["requestId"].Value<string>();
-                        JArray cars = receivedObj["cars"].Value<JArray>();
-                        string license = cars[0]["license"].Value<string>();
+                        string requestId = receivedObj["RequestId"].Value<string>();
+                        JArray cars = receivedObj["Cars"].Value<JArray>();
+                        string license = cars[0]["License"].Value<string>();
 
 
                         EventRequest eventRequest = EventRequestRepository.Instance.GetRequest(Guid.Parse(requestId));
 
                         JObject response = new JObject();
                         response["EventId"] = eventRequest.Event.EventId;
-                        response["command"] = "car";
-                        response["license"] = license;
+                        response["Command"] = "car";
+                        response["License"] = license;
 
                         MessageGateway.PublishMessage("event.update", response.ToString());
                     }
@@ -70,8 +70,8 @@ namespace CreationService
 
                 case "driverFound":
                     {
-                        string requestId = receivedObj["requestId"].Value<string>();
-                        JArray drivers = receivedObj["drivers"].Value<JArray>();
+                        string requestId = receivedObj["RequestId"].Value<string>();
+                        JArray drivers = receivedObj["Drivers"].Value<JArray>();
                         string driverName = drivers[0]["Name"].Value<string>();
 
 
@@ -79,8 +79,8 @@ namespace CreationService
 
                         JObject response = new JObject();
                         response["EventId"] = eventRequest.Event.EventId;
-                        response["command"] = "car";
-                        response["driverName"] = driverName;
+                        response["Command"] = "driver";
+                        response["DriverName"] = driverName;
 
                         MessageGateway.PublishMessage("event.update", response.ToString());
                     }

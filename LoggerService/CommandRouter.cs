@@ -10,8 +10,8 @@ namespace LoggerService
         internal static void Route(string routingKey, string message)
         {
             JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
-            string logMessage = receivedObj["message"].Value<string>();
-            string logService = receivedObj["service"].Value<string>();
+            string logMessage = receivedObj["Message"].Value<string>();
+            string logService = receivedObj["Service"].Value<string>();
             Log log = new Log();
             log.Message = logMessage;
             log.Service = logService;

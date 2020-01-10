@@ -33,7 +33,7 @@ namespace EventService.Controllers
         public IActionResult GetSpecificRating(int id)
         {
             JObject request = new JObject();
-            request["command"] = "get";
+            request["Command"] = "get";
             request["EventId"] = id;
 
             string result = rabbitMQ.RPCRequest("event.feedback", request.ToString());

@@ -35,8 +35,8 @@ namespace RatingService
                 Console.WriteLine(" [x] Received {0}", message);
 
                 JObject msgObj = JsonConvert.DeserializeObject<JObject>(message);
-                msgObj["correlationId"] = ea.BasicProperties.CorrelationId;
-                msgObj["replyTo"] = ea.BasicProperties.ReplyTo;
+                msgObj["CorrelationId"] = ea.BasicProperties.CorrelationId;
+                msgObj["ReplyTo"] = ea.BasicProperties.ReplyTo;
 
                 await CommandRouter.RouteAsync(msgObj.ToString());
 

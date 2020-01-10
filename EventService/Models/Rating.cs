@@ -24,7 +24,7 @@ namespace EventService.Models
         public string ConvertToJson(string command)
         {
             JObject rating = JObject.FromObject(this);
-            rating["command"] = command;
+            rating["Command"] = command;
 
             return rating.ToString();
         }

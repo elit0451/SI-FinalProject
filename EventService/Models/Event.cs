@@ -128,7 +128,7 @@ namespace EventService.Models
         public string ConvertToJson(string command)
         {
             JObject eventObj = JObject.FromObject(this);
-            eventObj["command"] = command;
+            eventObj["Command"] = command;
 
             return eventObj.ToString();
         }

@@ -12,10 +12,10 @@ namespace RatingService
         internal static async Task RouteAsync(string message)
         {
             JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
-            string command = receivedObj["command"].Value<string>();
+            string command = receivedObj["Command"].Value<string>();
             int eventId = receivedObj["EventId"].Value<int>();
-            string correlationId = receivedObj["correlationId"].Value<string>();
-            string replyTo = receivedObj["replyTo"].Value<string>();
+            string correlationId = receivedObj["CorrelationId"].Value<string>();
+            string replyTo = receivedObj["ReplyTo"].Value<string>();
 
             switch (command)
             {

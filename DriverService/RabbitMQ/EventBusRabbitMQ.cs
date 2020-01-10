@@ -53,8 +53,8 @@ namespace DriverService.RabbitMQ
             {
                 var message = Encoding.UTF8.GetString(e.Body);
                 JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
-                DateTime from = receivedObj["from"].Value<DateTime>();
-                DateTime to = receivedObj["to"].Value<DateTime>();
+                DateTime from = receivedObj["From"].Value<DateTime>();
+                DateTime to = receivedObj["To"].Value<DateTime>();
 
                 await Db.Connection.OpenAsync();
                 var query = new ApplicationQuery(Db);
