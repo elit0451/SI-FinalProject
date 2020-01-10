@@ -1,0 +1,101 @@
+LocationId,LocationCode,Name,Address,City
+1,63629-1748,Bushpig,"8 Harbort Park","Kuala Lumpur"
+2,65044-6585,"Oriental short-clawed otter","88 Lunder Circle",Tongmuluo
+3,49643-114,"Goose, snow","2815 Kensington Trail","Kuala Lumpur"
+4,54868-3041,"Small-clawed otter","67843 Talmadge Place",Xinminxiang
+5,57337-024,"Mynah, indian","847 Hanover Trail","Roi Et"
+6,76509-400,"Hedgehog, south african","96535 High Crossing Crossing","Västra Frölunda"
+7,60505-0773,Ibex,"91 Emmet Road",Kyoto
+8,37205-345,"Possum, golden brush-tailed","7146 Hovde Court",Bongued
+9,52686-271,"Black-capped chickadee","24 Dapin Avenue",Hatavch
+10,48951-2089,"Water monitor","70926 Fuller Way",Ranot
+11,52584-047,"Fringe-eared oryx","68697 Namekagon Parkway",Toride
+12,0245-0421,"Mudskipper (unidentified)","29815 Northridge Park",Blangkejeren
+13,51672-2073,"Deer, savannah","018 Scoville Junction",Junín
+14,0041-0340,"Baboon, savanna","64888 Milwaukee Parkway","Kafir Qala"
+15,52125-823,"Gray langur","442 Anderson Street","La Jagua de Ibirico"
+16,47682-406,"Black and white colobus","74 Forest Run Avenue",Sanbaishan
+17,41250-111,"Egyptian goose","6 Springs Terrace",Terny
+18,67046-014,"Blue duck","9 Jay Drive",Tongmuluo
+19,42254-052,"Black-tailed tree creeper","191 Laurel Parkway","Otacílio Costa"
+20,63304-403,"Andean goose","750 Grayhawk Hill","Kafir Qala"
+21,22840-0037,"Collared lizard","86600 2nd Crossing",Ranot
+22,65734-270,Paca,"95159 Fremont Crossing",Ngadri
+23,42549-537,"Flycatcher, tyrant","1832 Declaration Trail",Wanying
+24,54868-6295,"Australian masked owl","0 Maple Road",Blangkejeren
+25,67457-410,"Quoll, eastern","4341 Blue Bill Park Street","Corrego Grande"
+26,52125-835,"Whale, killer","20 Manley Crossing",Xinminxiang
+27,43772-0030,"Pine siskin","12 Esch Center","Nueva Gerona"
+28,54868-0079,"Sifaka, verreaux's","032 Ronald Regan Circle","Kafir Qala"
+29,42507-922,"Gazer, sun","07487 Lindbergh Hill","Swan Hills"
+30,53808-0919,"Greater flamingo","47658 Troy Alley",Hepu
+31,54473-224,"Tortoise, galapagos","95 Truax Avenue",Buchou
+32,53808-0800,"White-mantled colobus","1 Shopko Point",Fukumitsu
+33,65162-316,"Snake, carpet","1456 Fuller Street",Sanbaishan
+34,75857-2306,"Kingfisher, malachite","738 Cottonwood Point",Richmond
+35,59676-562,"White-eye, cape","7888 Steensland Alley",Khalopyenichy
+36,36987-1804,Numbat,"4759 Main Circle",Cabitan
+37,10596-159,"Goose, andean","09371 North Circle",Asahi
+38,64960-000,Oribi,"9 Dexter Plaza",Blangkejeren
+39,54868-5213,"Red meerkat","30 Dorton Place",Buchou
+40,58407-625,"Ring-tailed coatimundi","19139 Heath Road","La Jagua de Ibirico"
+41,0603-1008,"Pigeon, wood","69727 5th Way",Grimstad
+42,49825-131,"Rat, arboral spiny","8771 Waubesa Lane","Banjar Teguan"
+43,68151-1520,"Lion, steller sea","77933 Service Lane","Paris 01"
+44,0527-1475,"Oriental short-clawed otter","26253 Graedel Junction",Mehrān
+45,11084-161,"Gull, herring","20230 Tomscot Way",Khalopyenichy
+46,11527-478,"Civet (unidentified)","96 Walton Center",Chaman
+47,11673-117,"Lion, steller's sea","8 Holy Cross Park",Pederneiras
+48,67544-002,Chuckwalla,"09 Bunting Park",Cabitan
+49,42192-104,"Lemur, brown","51 Melvin Way",Sendangkemulian
+50,41167-6021,"Lechwe, kafue flats","4592 Evergreen Hill",Buchou
+51,41268-458,"Striated heron","80056 Tennessee Circle",Siasi
+52,58466-023,"Genet, small-spotted","5852 Doe Crossing Center",Dulangan
+53,59667-0102,"Common zebra","117 Pond Point",Tongmuluo
+54,54868-3474,"Columbian rainbow boa","5 Buhler Alley",Havana
+55,41163-751,"Pallas's fish eagle","84846 New Castle Trail","Västra Frölunda"
+56,0378-3611,"Skink, african","3044 Brown Park",Oujiangcha
+57,63304-339,"Jackal, silver-backed","49 Cardinal Way",Raškovice
+58,51672-4016,"Hawk, red-tailed","347 Eggendart Trail",Dobrljin
+59,30142-929,"Flamingo, chilean","7 Pond Drive",Glatik
+60,58381-001,"Cat, ringtail","22551 Coolidge Plaza",Nanuque
+61,68788-9412,"Two-banded monitor","87 Roxbury Junction",Zárate
+62,43128-035,"Sociable weaver","42441 Mcbride Crossing",Fukumitsu
+63,54569-1889,"Boa, columbian rainbow","3 Westridge Court",Siasi
+64,52959-225,"Snake, tiger","4 Cordelia Plaza",Sendangkemulian
+65,54569-4904,"Common pheasant","86906 New Castle Street",Shar’ya
+66,0517-0134,"Pie, rufous tree","3 Sage Center",Hamada
+67,52164-1120,"Cardinal, black-throated","9628 Londonderry Court",Lajeado
+68,43857-0062,"Pied butcher bird","7193 Schlimgen Court",Ngadri
+69,63645-128,"Trumpeter, green-winged","86865 Michigan Avenue",Junqueiro
+70,0591-0405,"Western spotted skunk","44959 Fulton Center","Roi Et"
+71,60505-3952,"Dove, laughing","771 Sugar Place",Jaboatão
+72,76214-022,"Hornbill, red-billed","79 Superior Terrace",Shar’ya
+73,55312-234,"Antelope, sable","1073 Calypso Way",Glatik
+74,0615-1573,"Galapagos albatross","838 Mayer Plaza","Rio Brilhante"
+75,65862-308,"Cockatoo, long-billed","47034 Maywood Crossing","Nueva Gerona"
+76,0299-5500,"Porcupine, african","209 Cordelia Hill",Ngadri
+77,37205-755,"Hawk, ferruginous","8629 Grasskamp Park",Junín
+78,0093-1135,"Stork, european","68893 Oriole Drive",Tuquan
+79,65447-050,"Galapagos albatross","505 Killdeer Trail",Guanqiao
+80,54569-3372,"White-eye, cape","022 Tennessee Terrace",Hepu
+81,0268-1322,"Miner's cat","50 Kenwood Circle",Paranapanema
+82,0093-5537,"Squirrel, golden-mantled ground","27884 Lake View Lane","Al Qābil"
+83,0173-0949,"Badger, american","126 Mccormick Trail",Shijie
+84,50563-181,"Red sheep","20592 Fieldstone Point",Guanqiao
+85,66689-037,"Kangaroo, red","5 Elmside Avenue","Rio Brilhante"
+86,50436-9996,"Crane, black-crowned","533 Brentwood Road",Pierreville
+87,36987-2922,"Marten, american","39078 Florence Street",Pingfeng
+88,62011-0204,"Heron, yellow-crowned night","6 Gateway Avenue","Al Qābil"
+89,55154-0149,"Kingfisher, malachite","16019 Redwing Terrace",Rodatychi
+90,50730-5400,"Saddle-billed stork","14 Mcguire Pass",Shijie
+91,60512-6010,"Plover, three-banded","2355 Comanche Park","Korolëv Stan"
+92,51285-040,"Lion, australian sea","323 Barnett Place",Dobrljin
+93,50220-001,"Shelduck, common","19135 Helena Alley",Shijie
+94,68084-765,"Azara's zorro","5 American Way",Tuquan
+95,37205-763,"Eastern grey kangaroo","09657 Eastlawn Point",Qijiaxi
+96,55289-976,"Ibis, puna","705 Anniversary Terrace",Bielice
+97,36987-1476,"Dolphin, common","941 Jay Pass",Eg-Uur
+98,49349-538,Guerza,"1988 Fuller Junction",Richmond
+99,14783-255,"Dove, white-winged","24 American Ash Pass",Richmond
+100,63739-461,"Asian water dragon","0922 Welch Crossing","Espírito Santo do Pinhal"
