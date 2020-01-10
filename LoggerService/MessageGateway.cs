@@ -39,7 +39,6 @@ namespace LoggerService
                 CommandRouter.Route(ea.RoutingKey, message);
             };
 
-
             channel.BasicConsume(queue: queueName,
                                  autoAck: true,
                                  consumer: consumer);
@@ -47,7 +46,6 @@ namespace LoggerService
 
         internal static void PublishMessage(string queueName, string message)
         {
-
             channel.QueueDeclare(queue: queueName,
                                  durable: false,
                                  exclusive: false,

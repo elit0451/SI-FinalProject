@@ -29,6 +29,7 @@ namespace LoggerService
                 case "critical":
                     log.Level = LogLevel.CRITICAL;
                     break;
+                    
                 default:
                     Console.WriteLine("No such route");
                     break;
