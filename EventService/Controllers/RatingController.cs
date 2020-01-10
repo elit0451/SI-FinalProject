@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using EventService.Models;
 using EventService.RabbitMQ;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +16,6 @@ namespace EventService.Controllers
         {
             rabbitMQ = rabbitmq;
         }
-
 
         [HttpPost]
         public IActionResult AddNewRating(Rating rating)

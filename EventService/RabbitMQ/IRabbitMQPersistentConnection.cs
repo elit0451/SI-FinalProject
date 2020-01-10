@@ -1,5 +1,4 @@
 using System;
-using EventService.Models;
 using RabbitMQ.Client;
 
 namespace EventService.RabbitMQ

@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace EventService.Models
@@ -136,6 +133,4 @@ namespace EventService.Models
             return eventObj.ToString();
         }
     }
-
-
 }

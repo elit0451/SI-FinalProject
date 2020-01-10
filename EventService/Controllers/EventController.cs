@@ -18,7 +18,6 @@ namespace EventService.Controllers
             rabbitMQ = rabbitmq;
         }
 
-
         [HttpPost]
         public async Task<IActionResult> AddNewEvent(Event eventObj)
         {

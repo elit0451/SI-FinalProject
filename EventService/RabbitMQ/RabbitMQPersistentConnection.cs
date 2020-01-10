@@ -135,8 +135,6 @@ namespace EventService.RabbitMQ
             }
             else
             {
-                //  implement send warning email here
-                //-----------------------
                 Console.WriteLine("FATAL ERROR: RabbitMQ connections could not be created and opened");
                 return false;
             }

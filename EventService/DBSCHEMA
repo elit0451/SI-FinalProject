@@ -3,7 +3,6 @@ CREATE SCHEMA EventService;
 USE EventService;
 
 
-DROP TABLE IF EXISTS Rating;
 DROP TABLE IF EXISTS Event;
 DROP TABLE IF EXISTS EventType;
 
@@ -29,13 +28,5 @@ CREATE TABLE Event (
 	FOREIGN KEY (EventTypeId) REFERENCES EventType(EventTypeId),
     PRIMARY KEY (EventId)
 );
-
-CREATE TABLE Rating (
-	EventId INT NOT NULL,
-	Feedback INT NOT NULL,
-	FOREIGN KEY (EventId) REFERENCES Event(EventId),
-	PRIMARY KEY(EventId)
-);
-
 
 INSERT INTO EventType(Name) VALUES ('Social'),('Conference'),('Concert'),('Festival')

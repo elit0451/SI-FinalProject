@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Text;
 using EventService.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -128,12 +126,10 @@ namespace EventService.RabbitMQ
                 channel.BasicAcks += (sender, eventArgs) =>
                 {
                     Console.WriteLine("Sent RabbitMQ");
-                    //implement ack handle
                 };
                 channel.ConfirmSelect();
             }
         }
-
 
         internal string RPCRequest(string channelName, string message)
         {
@@ -158,7 +154,6 @@ namespace EventService.RabbitMQ
 
             return rpcResponseQueue.Take();
         }
-
         public void Dispose()
         {
             if (_consumerChannel != null)
