@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Text;
 using EventService.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -92,11 +93,23 @@ namespace EventService.RabbitMQ
             if (e.RoutingKey == "event.update")
             {
                 var message = Encoding.UTF8.GetString(e.Body);
-                Event receivedObj = JsonConvert.DeserializeObject<Event>(message);
+
+                JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
+                int eventId = receivedObj["EventId"].Value<int>();
+                string command = receivedObj["Command"].Value<string>().ToLower();
+
+                EventQuery query = new EventQuery(Db);
+                Event evnt = await query.FindOneAsync(eventId);
+
+                if (command == "driver")
+                {
+                    string driver = receivedObj["DriverName"].Value<string>().ToLower();
+                    evnt.DriverName = driver;
+                }
 
                 await Db.Connection.OpenAsync();
-                receivedObj.Db = Db;
-                await receivedObj.UpdateAsync();
+                evnt.Db = Db;
+                await evnt.UpdateAsync();
             }
         }
 
@@ -150,7 +163,7 @@ namespace EventService.RabbitMQ
                 consumer: rpcConsumer,
                 queue: rpcReplyQueueName,
                 autoAck: true);
-                
+
 
             return rpcResponseQueue.Take();
         }
