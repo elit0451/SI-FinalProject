@@ -39,6 +39,8 @@ namespace EventService.Models
                                             VALUES (@location, @drivername, @drivefrom, @datefrom, @dateto, @numberofpeople, @eventtypeid, @responsiblename, @responsiblephonenr, @notes);";
             BindParams(applicationCmd);
             await applicationCmd.ExecuteNonQueryAsync();
+
+            EventId = (int) applicationCmd.LastInsertedId;
         }
 
         public async Task UpdateAsync()
