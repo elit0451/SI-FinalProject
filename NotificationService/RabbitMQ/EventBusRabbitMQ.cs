@@ -76,12 +76,17 @@ namespace NotificationService.RabbitMQ
                         JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
                         int eventId = receivedObj["EventId"].Value<int>();
                         string command = receivedObj["Command"].Value<string>().ToLower();
-                        string license = receivedObj["License"].Value<string>().ToLower();
 
                         if (command == "car")
+                        {
+                            string license = receivedObj["License"].Value<string>().ToLower();
                             notificationContent = $"Car with license number - {license} was added to the event";
+                        }
                         else if (command == "driver")
-                            notificationContent = $"Driver with license number - {license} was assigned to the event";
+                        {
+                            string driver = receivedObj["DriverName"].Value<string>().ToLower();
+                            notificationContent = $"Driver {driver} was assigned to the event";
+                        }
 
 
                         await Db.Connection.OpenAsync();
