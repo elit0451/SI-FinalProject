@@ -57,13 +57,14 @@ namespace DriverService.RabbitMQ
                 DateTime to = receivedObj["To"].Value<DateTime>();
                 string requestId = receivedObj["RequestId"].Value<string>();
 
-                await Db.Connection.OpenAsync();
+                if(Db.Connection.State != System.Data.ConnectionState.Open)
+                    await Db.Connection.OpenAsync();
                 var query = new ApplicationQuery(Db);
                 var result = await query.FindAvailableDrivers(from, to);
 
                 JObject reply = new JObject();
                 reply.Add("RequestId", requestId);
-                reply.Add("Command", "driver.found");
+                reply.Add("Command", "driverFound");
                 reply.Add("Drivers", JToken.FromObject(result));
 
                 PublishFoundDrivers("driver.found", reply.ToString());

@@ -59,7 +59,9 @@ namespace NotificationService.RabbitMQ
 
                         notificationContent = $"{eventType} event was created for {dateFrom} to {dateTo} at {location}";
 
-                        await Db.Connection.OpenAsync();
+                        if (Db.Connection.State != System.Data.ConnectionState.Open)
+                            await Db.Connection.OpenAsync();
+
                         var notification = new Notification()
                         {
                             EventId = eventId,
@@ -88,8 +90,9 @@ namespace NotificationService.RabbitMQ
                             notificationContent = $"Driver {driver} was assigned to the event";
                         }
 
-
-                        await Db.Connection.OpenAsync();
+                        if (Db.Connection.State != System.Data.ConnectionState.Open)
+                            await Db.Connection.OpenAsync();
+                            
                         var notification = new Notification()
                         {
                             EventId = eventId,

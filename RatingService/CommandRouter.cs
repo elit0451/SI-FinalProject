@@ -27,15 +27,17 @@ namespace RatingService
                         Feedback = feedback
                     };
 
-                    await AppDb.Instance.Connection.OpenAsync();
+                    if (AppDb.Instance.Connection.State != System.Data.ConnectionState.Open)
+                        await AppDb.Instance.Connection.OpenAsync();
                     await rating.InsertAsync();
                     break;
                 case "get":
-                    await AppDb.Instance.Connection.OpenAsync();
+                    if (AppDb.Instance.Connection.State != System.Data.ConnectionState.Open)
+                        await AppDb.Instance.Connection.OpenAsync();
                     RatingQuery query = new RatingQuery(AppDb.Instance);
                     Rating foundRating = await query.FindOneAsync(eventId);
 
-                    if(!(foundRating is null))
+                    if (!(foundRating is null))
                         // Convert to JSON without a command
                         MessageGateway.PublishRPC(replyTo, correlationId, foundRating.ConvertToJson(""));
                     break;

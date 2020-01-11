@@ -97,7 +97,8 @@ namespace EventService.RabbitMQ
                 JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
                 int eventId = receivedObj["EventId"].Value<int>();
                 string command = receivedObj["Command"].Value<string>().ToLower();
-
+                if (Db.Connection.State != System.Data.ConnectionState.Open)
+                    await Db.Connection.OpenAsync();
                 EventQuery query = new EventQuery(Db);
                 Event evnt = await query.FindOneAsync(eventId);
 
@@ -107,7 +108,8 @@ namespace EventService.RabbitMQ
                     evnt.DriverName = driver;
                 }
 
-                await Db.Connection.OpenAsync();
+                if (Db.Connection.State != System.Data.ConnectionState.Open)
+                    await Db.Connection.OpenAsync();
                 evnt.Db = Db;
                 await evnt.UpdateAsync();
             }

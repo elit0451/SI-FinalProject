@@ -47,7 +47,9 @@ namespace RatingService.Models
         public string ConvertToJson(string command)
         {
             JObject rating = JObject.FromObject(this);
-            rating["command"] = command;
+            
+            if(command != string.Empty)
+                rating["command"] = command;
 
             return rating.ToString();
         }
