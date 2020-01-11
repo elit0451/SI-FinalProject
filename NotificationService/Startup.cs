@@ -25,8 +25,7 @@ namespace NotificationService
             services.AddControllers();
 
             // configuration located in appsettings.json
-            AppDb db = new AppDb(Configuration["ConnectionStrings:DefaultConnection"]);
-            services.AddTransient<AppDb>(_ => db);
+            services.AddTransient<AppDb>(s => new AppDb(Configuration["ConnectionStrings:DefaultConnection"]));
 
             services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
@@ -37,6 +36,7 @@ namespace NotificationService
                     HostName = "rabbitmq"
                 };
 
+                AppDb db = new AppDb(Configuration["ConnectionStrings:DefaultConnection"]);
                 return new RabbitMQPersistentConnection(factory, db);
             });
         }
@@ -65,7 +65,7 @@ namespace NotificationService
     }
 
     // Nested class for initiallizing RabbitMQ on startup
-     public static class ApplicationBuilderExtentions
+    public static class ApplicationBuilderExtentions
     {
         public static IRabbitMQPersistentConnection Listener { get; set; }
 

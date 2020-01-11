@@ -22,8 +22,7 @@ namespace DriverService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            AppDb db = new AppDb(Configuration["ConnectionStrings:DefaultConnection"]);
-            services.AddTransient<AppDb>(_ => db);
+            services.AddTransient<AppDb>(s => new AppDb(Configuration["ConnectionStrings:DefaultConnection"]));
 
             services.AddSingleton<RabbitMQPersistentConnection>(sp =>
             {
@@ -33,7 +32,8 @@ namespace DriverService
                 {
                     HostName = "rabbitmq"
                 };
-
+                
+                AppDb db = new AppDb(Configuration["ConnectionStrings:DefaultConnection"]);
                 return new RabbitMQPersistentConnection(factory, db);
             });
 

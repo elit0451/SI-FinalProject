@@ -23,8 +23,7 @@ namespace EventService
         {
             services.AddControllers();
 
-            AppDb db = new AppDb(Configuration["ConnectionStrings:DefaultConnection"]);
-            services.AddTransient<AppDb>(_ => db);
+            services.AddTransient<AppDb>(s => new AppDb(Configuration["ConnectionStrings:DefaultConnection"]));
 
             services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
@@ -34,7 +33,8 @@ namespace EventService
                 {
                     HostName = "rabbitmq"
                 };
-
+                
+                AppDb db = new AppDb(Configuration["ConnectionStrings:DefaultConnection"]);
                 return new RabbitMQPersistentConnection(factory, db);
             });
         }
