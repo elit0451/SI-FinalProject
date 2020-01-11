@@ -16,7 +16,7 @@ namespace NotificationService.Controllers
         {
             Db = db;
         }
-        
+
         [HttpGet("{eventId}")]
         public async Task<IActionResult> GetNotifications(int eventId)
         {
@@ -25,10 +25,10 @@ namespace NotificationService.Controllers
             await Db.Connection.OpenAsync();
             var query = new NotificationQuery(Db);
             var result = await query.GetAllAsync(eventId);
+            if (!(result is null))
+                foreach (Notification notification in result)
+                    resultOfDTOs.Add(notification.ConvertToDTO());
 
-            foreach(Notification notification in result)
-                resultOfDTOs.Add(notification.ConvertToDTO());
-                
             return new OkObjectResult(resultOfDTOs);
         }
 
