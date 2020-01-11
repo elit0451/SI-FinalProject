@@ -21,6 +21,8 @@ namespace DriverService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services.AddControllers();
             services.AddTransient<AppDb>(s => new AppDb(Configuration["ConnectionStrings:DefaultConnection"]));
 
@@ -32,7 +34,7 @@ namespace DriverService
                 {
                     HostName = "rabbitmq"
                 };
-                
+
                 AppDb db = new AppDb(Configuration["ConnectionStrings:DefaultConnection"]);
                 return new RabbitMQPersistentConnection(factory, db);
             });
@@ -46,6 +48,8 @@ namespace DriverService
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

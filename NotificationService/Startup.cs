@@ -22,6 +22,7 @@ namespace NotificationService
         // Used to add services to the controller
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
 
             // configuration located in appsettings.json
@@ -48,6 +49,8 @@ namespace NotificationService
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
