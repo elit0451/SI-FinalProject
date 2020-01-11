@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link clienttab" href="#" onclick="tabChange('Client')">Client</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link admintab" href="#" onclick="tabChange('Admin')">Admin</a>
+        </li>
+    </ul>
+    <div class="container">
+        <div class="client">
+            <div class="form">
+                <form>
+                    <div class="form-group">
+                        <label for="eventName">Event name</label>
+                        <input type="text" class="form-control" id="eventName" placeholder="John's birthday">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventType">Event type</label>
+                        <select class="form-control" id="eventType">
+                            <option selected disabled>Select an event type</option>
+                            <option value="1">Social</option>
+                            <option value="2">Conference</option>
+                            <option value="3">Concert</option>
+                            <option value="4">Festival</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventNrGuests">Number of guests</label>
+                        <input type="number" class="form-control" id="eventNrGuests" placeholder="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventLocation">Event location</label>
+                        <select class="form-control" id="eventLocation">
+                            <option selected disabled>Select a location</option>
+                            <option value="23">test</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventPickupLocation">Pick-up location</label>
+                        <select class="form-control" id="eventPickupLocation">
+                            <option selected disabled>Select a pick-up location</option>
+                            <option value="23">test</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDateFrom">Event from-date</label>
+                        <input type="text" class="form-control" id="eventDateFrom" placeholder="12-03-2020">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDateTo">Event to-date</label>
+                        <input type="text" class="form-control" id="eventDateTo" placeholder="12-03-2020">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventPerson">Contact person</label>
+                        <input type="text" class="form-control" id="eventName" placeholder="Lisa Beck">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventPhone">Contact number</label>
+                        <input type="text" class="form-control" id="eventPhone" placeholder="12345678">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventNotes">Notes</label>
+                        <textarea class="form-control" id="eventNotes" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success" onclick="addEvent(event)">Add event</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="eventInfo container">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="eventName">Event name</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventType">Event type</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventNrGuests">Number of guests</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventLocation">Event location</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventPickupLocation">Pick-up location</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDateFrom">Event from-date</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDateTo">Event to-date</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventPerson">Contact person</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventPhone">Contact number</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventNotes">Notes</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="notificationBar">
+                            <div class="notification"
+                                style="background-color: yellow; border-bottom: 1px solid red; padding: 10px; width: 100%; height: 80px;">
+                                tetattefvasdshdkshjdvlasv</div>
+                            <div class="notification"
+                                style="background-color: yellow; border-bottom: 1px solid red; padding: 10px; width: 100%; height: 80px;">
+                                tetattefvasdshdkshjdvlasv</div>
+                            <div class="notification"
+                                style="background-color: yellow; border-bottom: 1px solid red; padding: 10px; width: 100%; height: 80px;">
+                                tetattefvasdshdkshjdvlasv</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin">
+            <div class="newApplicant">
+                <form>
+                    <div class="form-group">
+                        <label for="driverName">Applicant name</label>
+                        <input type="text" class="form-control" id="driverName" placeholder="Bent Jamison">
+                    </div>
+                    <div class="form-group">
+                        <label for="driverBirthday">Date of birth</label>
+                        <input type="text" class="form-control" id="driverBirthday" placeholder="01-01-1980">
+                    </div>
+                    <div class="form-group">
+                        <label for="driverLicenseNr">License number</label>
+                        <input type="text" class="form-control" id="driverLicenseNr" placeholder="010132-000">
+                    </div>
+                </form>
+            </div>
+
+            <div class="acceptApplicants">
+                <ul class="list-group">
+                    <li class="list-group-item">Bogdan Hvidt<button type="button"
+                            class="btn btn-success">Accept</button>
+                    </li>
+                    <li class="list-group-item">Alexander Iulian<button type="button"
+                            class="btn btn-success">Accept</button></li>
+                    <li class="list-group-item">Hedviga Ion<button type="button" class="btn btn-success">Accept</button>
+                    </li>
+                    <li class="list-group-item">Roxana Larsen<button type="button"
+                            class="btn btn-success">Accept</button>
+                    </li>
+                    <li class="list-group-item">Etorre Magalhaes<button type="button"
+                            class="btn btn-success">Accept</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $(".eventInfo").hide();
+            $(".acceptApplicants").hide();
+            tabChange('Client');
+        });
+
+        function tabChange(tabName) {
+            if (tabName === "Client") {
+                $(".client").show();
+                $(".admin").hide();
+                $(".clienttab").addClass("active");
+                $(".admintab").removeClass("active");
+            }
+            else {
+                $(".admin").show();
+                $(".client").hide();
+                $(".admintab").addClass("active");
+                $(".clienttab").removeClass("active");
+            }
+        }
+
+        function addEvent(e) {
+            var evnt = {};
+
+            evnt.Location = $("#eventLocation").val();
+            evnt.DriveFrom = $("#eventPickupLocation").val();
+            evnt.DriverName = "";
+            evnt.DateFrom = $("#eventDateFrom").val();
+            evnt.DateTo = $("#eventDateTo").val();
+            evnt.NumberOfPeople = parseInt($("#eventNrGuests").val());
+            evnt.EventType = { }
+            evnt.EventType.EventTypeId = parseInt($("#eventType").children("option:selected").val());
+            evnt.EventType.Name = $("#eventType").children("option:selected").text();
+            evnt.ResponsibleName = $("#eventName").val();
+            evnt.ResponsiblePhoneNr = $("#eventPhone").val();
+            evnt.Notes = $("#eventNotes").val();
+
+            $.ajax({
+                url: "http://localhost:5000/Event",
+                type: "POST",
+                data: JSON.stringify(evnt),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    $(".form").hide();
+                    $(".eventInfo").show();
+                }
+            })
+
+            e.preventDefault();
+        }
+
+    </script>
+</body>
+
+</html>
