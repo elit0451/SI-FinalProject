@@ -183,5 +183,7 @@ $RECYCLE.BIN/
 
 # VScode
 /.settings
+*.classpath
+*.project
 
-/target/ 
+/target/
