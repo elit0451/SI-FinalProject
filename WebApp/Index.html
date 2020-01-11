@@ -88,34 +88,44 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <div class="form-group">
-                            <label for="eventName">Event name</label>
+                            <label for="eventNameInfo">Event name</label>
+                            <h5 id="eventNameInfo">Test</h5>
                         </div>
                         <div class="form-group">
-                            <label for="eventType">Event type</label>
+                            <label for="eventTypeInfo">Event type</label>
+                            <h5 id="eventTypeInfo">Test</h5>
                         </div>
                         <div class="form-group">
-                            <label for="eventNrGuests">Number of guests</label>
+                            <label for="eventNrGuestsInfo">Number of guests</label>
+                            <h5 id="eventNrGuestsInfo">Test</h5>
                         </div>
                         <div class="form-group">
-                            <label for="eventLocation">Event location</label>
+                            <label for="eventLocationInfo">Event location</label>
+                            <h5 id="eventLocationInfo">Test</h5>
                         </div>
                         <div class="form-group">
-                            <label for="eventPickupLocation">Pick-up location</label>
+                            <label for="eventPickupLocationInfo">Pick-up location</label>
+                            <h5 id="eventPickupLocationInfo">Test</h5>
                         </div>
                         <div class="form-group">
-                            <label for="eventDateFrom">Event from-date</label>
+                            <label for="eventDateFromInfo">Event from-date</label>
+                            <h5 id="eventDateFromInfo">Test</h5>
                         </div>
                         <div class="form-group">
-                            <label for="eventDateTo">Event to-date</label>
+                            <label for="eventDateToInfo">Event to-date</label>
+                            <h5 id="eventDateToInfo">Test</h5>
                         </div>
                         <div class="form-group">
-                            <label for="eventPerson">Contact person</label>
+                            <label for="eventPersonInfo">Contact person</label>
+                            <h5 id="eventPersonInfo">Test</h5>
                         </div>
                         <div class="form-group">
-                            <label for="eventPhone">Contact number</label>
+                            <label for="eventPhoneInfo">Contact number</label>
+                            <h5 id="eventPhoneInfo">Test</h5>
                         </div>
                         <div class="form-group">
-                            <label for="eventNotes">Notes</label>
+                            <label for="eventNotesInfo">Notes</label>
+                            <h5 id="eventNotesInfo">Test</h5>
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -165,7 +175,7 @@
 
     <script>
         $(document).ready(function () {
-            $(".eventInfo").show();
+            $(".eventInfo").hide();
             $(".acceptApplicants").hide();
             tabChange('Client');
         });
@@ -175,7 +185,7 @@
                 url: "http://localhost:5003/Notification/" + eventid,
                 success: function (data) {
                     $('.notificationBar').empty();
-                    data.forEach(function(item, index){
+                    data.forEach(function (item, index) {
                         $('.notificationBar').append(`
                         <div class="notification" style="background-color: #DCDDDE; border-bottom: 1px solid #676868; padding: 10px; width: 100%; height: 80px;" onclick="removeNotification(${item.notificationId})">
                             ${item.content}
@@ -186,13 +196,11 @@
             });
         }
 
-        function removeNotification(notificationId)
-        {
+        function removeNotification(notificationId) {
             $.ajax({
                 url: "http://localhost:5003/Notification/" + notificationId,
                 type: "PUT",
                 success: function (data) {
-                    console.log(data);
                 }
             })
         }
@@ -235,17 +243,27 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                    console.log(data);
                     $(".form").hide();
                     $(".eventInfo").show();
 
-                    setInterval(function () {
-                        refreshNotifications(data.eventId);
-                    }, 1000);
-                }
+                    $("#eventLocationInfo").text(data.location);
+                    $("#eventPickupLocationInfo").text(data.driveFrom);
+                    $("#eventDateFromInfo").text(data.dateFrom);
+                    $("#eventDateToInfo").text(data.dateTo);
+                    $("#eventNrGuestsInfo").text(data.numberOfPeople);
+                    $("#eventTypeInfo").text(data.eventType.name);
+                    $("#eventNameInfo").text(data.eventId);
+                    $("#eventPersonInfo").text(data.responsibleName);
+                    $("#eventPhoneInfo").text(data.responsiblePhoneNr);
+                    $("#eventNotesInfo").text(data.notes);
+
+            setInterval(function () {
+                refreshNotifications(data.eventId);
+            }, 1000);
+        }
             })
 
-            e.preventDefault();
+        e.preventDefault();
         }
 
     </script>
