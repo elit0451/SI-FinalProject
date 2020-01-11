@@ -60,11 +60,11 @@
                     </div>
                     <div class="form-group">
                         <label for="eventDateFrom">Event from-date</label>
-                        <input type="text" class="form-control" id="eventDateFrom" placeholder="12-03-2020">
+                        <input type="text" class="form-control" id="eventDateFrom" placeholder="2020-03-02">
                     </div>
                     <div class="form-group">
                         <label for="eventDateTo">Event to-date</label>
-                        <input type="text" class="form-control" id="eventDateTo" placeholder="12-03-2020">
+                        <input type="text" class="form-control" id="eventDateTo" placeholder="2020-03-02">
                     </div>
                     <div class="form-group">
                         <label for="eventPerson">Contact person</label>
@@ -121,14 +121,14 @@
                     <div class="col-sm-4">
                         <div class="notificationBar">
                             <div class="notification"
-                                style="background-color: yellow; border-bottom: 1px solid red; padding: 10px; width: 100%; height: 80px;">
-                                tetattefvasdshdkshjdvlasv</div>
+                                style="background-color: #DCDDDE; border-bottom: 1px solid #676868; padding: 10px; width: 100%; height: 80px;">
+                                New notification</div>
                             <div class="notification"
-                                style="background-color: yellow; border-bottom: 1px solid red; padding: 10px; width: 100%; height: 80px;">
-                                tetattefvasdshdkshjdvlasv</div>
+                                style="background-color: #DCDDDE; border-bottom: 1px solid #676868; padding: 10px; width: 100%; height: 80px;">
+                                Older notification</div>
                             <div class="notification"
-                                style="background-color: yellow; border-bottom: 1px solid red; padding: 10px; width: 100%; height: 80px;">
-                                tetattefvasdshdkshjdvlasv</div>
+                                style="background-color: #DCDDDE; border-bottom: 1px solid #676868; padding: 10px; width: 100%; height: 80px;">
+                                Unread notification</div>
                         </div>
                     </div>
                 </div>
@@ -144,7 +144,7 @@
                     </div>
                     <div class="form-group">
                         <label for="driverBirthday">Date of birth</label>
-                        <input type="text" class="form-control" id="driverBirthday" placeholder="01-01-1980">
+                        <input type="text" class="form-control" id="driverBirthday" placeholder="1990-01-01">
                     </div>
                     <div class="form-group">
                         <label for="driverLicenseNr">License number</label>
@@ -179,6 +179,16 @@
             tabChange('Client');
         });
 
+        function refreshNotifications(eventid) {
+            $.ajax({
+                url: "http://localhost:5003/Notification/" + eventid,
+                success: function (data) {
+                    console.log(data);
+                },
+                dataType: "json"
+            });
+        }
+
         function tabChange(tabName) {
             if (tabName === "Client") {
                 $(".client").show();
@@ -203,7 +213,7 @@
             evnt.DateFrom = $("#eventDateFrom").val();
             evnt.DateTo = $("#eventDateTo").val();
             evnt.NumberOfPeople = parseInt($("#eventNrGuests").val());
-            evnt.EventType = { }
+            evnt.EventType = {}
             evnt.EventType.EventTypeId = parseInt($("#eventType").children("option:selected").val());
             evnt.EventType.Name = $("#eventType").children("option:selected").text();
             evnt.ResponsibleName = $("#eventName").val();
@@ -220,6 +230,10 @@
                     console.log(data);
                     $(".form").hide();
                     $(".eventInfo").show();
+
+                    setInterval(function () {
+                        refreshNotifications(data.eventId);
+                    }, 1000);
                 }
             })
 
