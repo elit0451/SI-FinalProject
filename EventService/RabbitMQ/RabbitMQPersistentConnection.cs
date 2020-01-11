@@ -32,7 +32,7 @@ namespace EventService.RabbitMQ
             }
 
             Db = db;
-            _eventBusRabbitMQ = new EventBusRabbitMQ(this, Db, "event.update");
+            _eventBusRabbitMQ = new EventBusRabbitMQ(this, Db, "event", "update");
         }
 
         public void CreateConsumerChannel()
@@ -55,24 +55,24 @@ namespace EventService.RabbitMQ
             _eventBusRabbitMQ.CreateRPCChannel();
         }
 
-        public void PublishToChannel(string channelName, string message)
+        public void PublishToChannel(string exchangeName, string routingKey, string message)
         {
             if (!IsConnected)
             {
                 TryConnect();
             }
 
-            _eventBusRabbitMQ.PublishMessage(channelName, message);
+            _eventBusRabbitMQ.PublishMessage(exchangeName, routingKey, message);
         }
 
-        public string RPCRequest(string queueName, string message)
+        public string RPCRequest(string exchangeName, string routingKey, string message)
         {
             if (!IsConnected)
             {
                 TryConnect();
             }
 
-            return _eventBusRabbitMQ.RPCRequest(queueName, message);
+            return _eventBusRabbitMQ.RPCRequest(exchangeName, routingKey, message);
         }
 
         public IModel CreateModel()

@@ -19,7 +19,7 @@ namespace NotificationService.RabbitMQ
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             Db = db;
         }
-        internal IModel CreateConsumerChannel(string queueName)
+        internal IModel CreateConsumerChannel(string exchangeName, string routingKey)
         {
             if (!_persistentConnection.IsConnected)
             {
@@ -27,7 +27,13 @@ namespace NotificationService.RabbitMQ
             }
 
             var channel = _persistentConnection.CreateModel();
-            channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+
+            channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Direct);
+
+            var queueName = channel.QueueDeclare().QueueName;
+            channel.QueueBind(queue: queueName,
+                              exchange: exchangeName,
+                              routingKey: routingKey);
 
             var consumer = new EventingBasicConsumer(channel);
 
@@ -37,7 +43,7 @@ namespace NotificationService.RabbitMQ
             channel.CallbackException += (sender, ea) =>
             {
                 _consumerChannel.Dispose();
-                _consumerChannel = CreateConsumerChannel(queueName);
+                _consumerChannel = CreateConsumerChannel(exchangeName, routingKey);
             };
             return channel;
         }
@@ -47,7 +53,7 @@ namespace NotificationService.RabbitMQ
 
             switch (e.RoutingKey)
             {
-                case "event.add":
+                case "add":
                     {
                         var message = Encoding.UTF8.GetString(e.Body);
                         JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
@@ -72,7 +78,7 @@ namespace NotificationService.RabbitMQ
                     }
                     break;
 
-                case "event.update":
+                case "update":
                     {
                         var message = Encoding.UTF8.GetString(e.Body);
                         JObject receivedObj = JsonConvert.DeserializeObject<JObject>(message);
@@ -92,7 +98,7 @@ namespace NotificationService.RabbitMQ
 
                         if (Db.Connection.State != System.Data.ConnectionState.Open)
                             await Db.Connection.OpenAsync();
-                            
+
                         var notification = new Notification()
                         {
                             EventId = eventId,

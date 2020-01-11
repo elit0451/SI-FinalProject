@@ -11,41 +11,43 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MessageGateway {
-        private static  ConnectionFactory factory;
-        private static Connection requestConnection;
-        private static Channel requestChannel;
+    private static ConnectionFactory factory;
+    private static Connection requestConnection;
+    private static Channel requestChannel;
 
-        static{
-            try {
-                factory = new ConnectionFactory();
-                factory.setHost("rabbitmq");
-                requestConnection = factory.newConnection();
-                requestChannel = requestConnection.createChannel();
-            } catch (IOException | TimeoutException ex) {
-                Logger.getLogger(MessageGateway.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    static {
+        try {
+            factory = new ConnectionFactory();
+            factory.setHost("rabbitmq");
+            requestConnection = factory.newConnection();
+            requestChannel = requestConnection.createChannel();
+        } catch (IOException | TimeoutException ex) {
+            Logger.getLogger(MessageGateway.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
 
-        public static void ReceiveRequests() throws IOException
-        {
-            requestChannel.queueDeclare("connector.requests",false, false, false, null);
+    public static void ReceiveRequests() throws IOException {
+        requestChannel.exchangeDeclare("connector", "Direct");
 
-            DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-                var body = delivery.getBody();
-                var message = new String(body, "UTF-8");
-                CommandRouter.Route(message);
-            };
-            
-            requestChannel.basicConsume("connector.requests", true, deliverCallback, consumerTag -> { });
-        }
+        String queueName = requestChannel.queueDeclare().getQueue();
+        requestChannel.queueBind(queueName, "connector", "requests");
 
-        public static void SendAvailableCars(String message) throws IOException
-        {
-            requestChannel.queueDeclare("cars.available", false, false, false, null);
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            var body = delivery.getBody();
+            var message = new String(body, "UTF-8");
+            CommandRouter.Route(message);
+        };
 
-            var props = new BasicProperties.Builder().replyTo("cars.available").build();
+        requestChannel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+        });
+    }
 
-            requestChannel.basicPublish("", "cars.available", props, message.getBytes());
-        }
+    public static void SendAvailableCars(String message) throws IOException {
+        requestChannel.exchangeDeclare("cars", "Direct");
+
+        var props = new BasicProperties.Builder().build();
+
+        requestChannel.basicPublish("cars", "available", props, message.getBytes());
+    }
 
 }

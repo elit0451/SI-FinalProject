@@ -12,10 +12,10 @@ namespace EventService.RabbitMQ
         IModel CreateModel();
 
         void CreateConsumerChannel();
-        void PublishToChannel(string channelName, string message);
+        void PublishToChannel(string exchangeName, string routingKey, string message);
 
         void Disconnect();
-        string RPCRequest(string queueName, string message);
+        string RPCRequest(string exchangeName, string routingKey, string message);
         void CreateRPCChannel();
     }
 }

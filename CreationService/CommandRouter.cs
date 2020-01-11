@@ -46,8 +46,8 @@ namespace CreationService
                     requestDriver["RequestId"] = r.RequestId;
 
 
-                    MessageGateway.PublishMessage("connector.requests", requestCar.ToString());
-                    MessageGateway.PublishMessage("driver.find", requestDriver.ToString());
+                    MessageGateway.PublishMessage("connector", "requests", requestCar.ToString());
+                    MessageGateway.PublishMessage("driver", "find", requestDriver.ToString());
                     break;
 
                 case "carFound":
@@ -64,7 +64,7 @@ namespace CreationService
                         response["Command"] = "car";
                         response["License"] = license;
 
-                        MessageGateway.PublishMessage("event.update", response.ToString());
+                        MessageGateway.PublishMessage("event", "update", response.ToString());
                     }
                     break;
 
@@ -82,7 +82,7 @@ namespace CreationService
                         response["Command"] = "driver";
                         response["DriverName"] = driverName;
 
-                        MessageGateway.PublishMessage("event.update", response.ToString());
+                        MessageGateway.PublishMessage("event", "update", response.ToString());
                     }
                     break;
                 default:

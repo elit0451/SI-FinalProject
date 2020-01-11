@@ -25,7 +25,7 @@ namespace EventService.Controllers
             eventObj.Db = Db;
             await eventObj.InsertAsync();
 
-            rabbitMQ.PublishToChannel("event.add", eventObj.ConvertToJson("add"));
+            rabbitMQ.PublishToChannel("event", "add", eventObj.ConvertToJson("add"));
             
             return new OkObjectResult(eventObj);
         }

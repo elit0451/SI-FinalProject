@@ -34,7 +34,7 @@ namespace NotificationService.RabbitMQ
             Db = db;
         }
 
-        public void CreateConsumerChannel(string queueName)
+        public void CreateConsumerChannel(string exchangeName, string routingKey)
         {
             if (!IsConnected)
             {
@@ -42,7 +42,7 @@ namespace NotificationService.RabbitMQ
             }
 
             _eventBusRabbitMQ = new EventBusRabbitMQ(this, Db);
-            _eventBusRabbitMQ.CreateConsumerChannel(queueName);
+            _eventBusRabbitMQ.CreateConsumerChannel(exchangeName, routingKey);
         }
 
         public IModel CreateModel()

@@ -21,11 +21,12 @@ namespace RatingService
 
         internal static void ReceiveRating()
         {
-            channel.QueueDeclare(queue: "event.feedback",
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+            var queueName = channel.QueueDeclare().QueueName;
+            channel.ExchangeDeclare(exchange: "event", type: ExchangeType.Direct);
+
+            channel.QueueBind(queue: queueName,
+                              exchange: "event",
+                              routingKey: "feedback");
 
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += async (model, ea) =>
@@ -41,7 +42,7 @@ namespace RatingService
                 await CommandRouter.RouteAsync(msgObj.ToString());
 
             };
-            channel.BasicConsume(queue: "event.feedback",
+            channel.BasicConsume(queue: queueName,
                                  autoAck: true,
                                  consumer: consumer);
         }
@@ -53,11 +54,11 @@ namespace RatingService
             replyProps.CorrelationId = correlationId;
 
             channel.BasicPublish(
-                exchange: "", 
-                routingKey: replyTo, 
+                exchange: "",
+                routingKey: replyTo,
                 basicProperties: replyProps,
                 body: responseBytes);
-            
+
             Console.WriteLine("Published to {0}", replyTo);
         }
     }

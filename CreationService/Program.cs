@@ -13,9 +13,9 @@ namespace CreationService
 
         private void Run()
         {
-            MessageGateway.ReceiveQueue("event.add", ReceivedEvent);
-            MessageGateway.ReceiveQueue("cars.available", ReceivedEvent);
-            MessageGateway.ReceiveQueue("driver.found", ReceivedEvent);
+            MessageGateway.ReceiveQueue("event", "add", ReceivedEvent);
+            MessageGateway.ReceiveQueue("cars", "available", ReceivedEvent);
+            MessageGateway.ReceiveQueue("driver", "found", ReceivedEvent);
 
             Console.WriteLine("Running");
             while (true) { }

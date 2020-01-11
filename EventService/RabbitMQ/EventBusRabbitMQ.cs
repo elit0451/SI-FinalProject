@@ -13,7 +13,8 @@ namespace EventService.RabbitMQ
     {
         private readonly IRabbitMQPersistentConnection _persistentConnection;
         private IModel _consumerChannel;
-        private string _queueName;
+        private string _exchangeName;
+        private string _routingKey;
         private readonly BlockingCollection<string> rpcResponseQueue = new BlockingCollection<string>();
         private string rpcReplyQueueName;
         private IBasicProperties rpcProperties;
@@ -23,10 +24,11 @@ namespace EventService.RabbitMQ
         private AppDb Db;
 
 
-        public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, AppDb db, string queueName = null)
+        public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, AppDb db, string exchangeName, string routingKey)
         {
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
-            _queueName = queueName;
+            _exchangeName = exchangeName;
+            _routingKey = routingKey;
             Db = db;
         }
 
@@ -43,15 +45,18 @@ namespace EventService.RabbitMQ
             }
 
             var channel = _persistentConnection.CreateModel();
-            channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+            channel.ExchangeDeclare(exchange: _exchangeName, type: ExchangeType.Direct);
+
+            var queueName = channel.QueueDeclare().QueueName;
+            channel.QueueBind(queue: queueName,
+                              exchange: _exchangeName,
+                              routingKey: _routingKey);
 
             var consumer = new EventingBasicConsumer(channel);
 
             consumer.Received += ReceivedEvent;
 
-
-
-            channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
+            channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
             channel.CallbackException += (sender, ea) =>
             {
                 _consumerChannel.Dispose();
@@ -90,7 +95,7 @@ namespace EventService.RabbitMQ
 
         private async void ReceivedEvent(object sender, BasicDeliverEventArgs e)
         {
-            if (e.RoutingKey == "event.update")
+            if (e.RoutingKey == "update")
             {
                 var message = Encoding.UTF8.GetString(e.Body);
 
@@ -115,9 +120,8 @@ namespace EventService.RabbitMQ
             }
         }
 
-        public void PublishMessage(string _queueName, string message)
+        public void PublishMessage(string exchangeName, string routingKey, string message)
         {
-
             if (!_persistentConnection.IsConnected)
             {
                 _persistentConnection.TryConnect();
@@ -125,8 +129,7 @@ namespace EventService.RabbitMQ
 
             using (var channel = _persistentConnection.CreateModel())
             {
-
-                channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+                channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Direct);
 
                 var body = Encoding.UTF8.GetBytes(message);
 
@@ -135,7 +138,7 @@ namespace EventService.RabbitMQ
                 properties.DeliveryMode = 2;
 
                 channel.ConfirmSelect();
-                channel.BasicPublish(exchange: "", routingKey: _queueName, mandatory: true, basicProperties: properties, body: body);
+                channel.BasicPublish(exchange: exchangeName, routingKey: routingKey, basicProperties: null, body: body);
                 channel.WaitForConfirmsOrDie();
 
                 channel.BasicAcks += (sender, eventArgs) =>
@@ -146,17 +149,19 @@ namespace EventService.RabbitMQ
             }
         }
 
-        internal string RPCRequest(string channelName, string message)
+        internal string RPCRequest(string exchangeName, string routingKey, string message)
         {
             if (!_persistentConnection.IsConnected)
             {
                 _persistentConnection.TryConnect();
             }
-
+            
+            rpcChannel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Direct);
+            
             var messageBytes = Encoding.UTF8.GetBytes(message);
             rpcChannel.BasicPublish(
-                exchange: "",
-                routingKey: channelName,
+                exchange: exchangeName,
+                routingKey: routingKey,
                 mandatory: true,
                 basicProperties: rpcProperties,
                 body: messageBytes);

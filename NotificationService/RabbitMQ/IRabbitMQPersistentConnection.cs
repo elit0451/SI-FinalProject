@@ -7,7 +7,7 @@ namespace NotificationService.RabbitMQ
         bool IsConnected { get; }
         bool TryConnect();
         IModel CreateModel();
-        void CreateConsumerChannel(string queue);
+        void CreateConsumerChannel(string exchangeName, string routingKey);
         void Disconnect();
     }
 }

@@ -41,7 +41,7 @@ namespace DriverService.RabbitMQ
                 TryConnect();
             }
 
-            _eventBusRabbitMQ = new EventBusRabbitMQ(this, Db, "driver.find");
+            _eventBusRabbitMQ = new EventBusRabbitMQ(this, Db, "driver", "find");
             _eventBusRabbitMQ.CreateConsumerChannel();
         }
 

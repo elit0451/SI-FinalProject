@@ -22,7 +22,7 @@ namespace EventService.Controllers
         {
             if (ModelState.IsValid)
             {
-                rabbitMQ.PublishToChannel("event.feedback", rating.ConvertToJson("add"));
+                rabbitMQ.PublishToChannel("event", "feedback", rating.ConvertToJson("add"));
                 return new OkObjectResult(rating);
             }
             else
@@ -36,7 +36,7 @@ namespace EventService.Controllers
             request["Command"] = "get";
             request["EventId"] = id;
 
-            string result = rabbitMQ.RPCRequest("event.feedback", request.ToString());
+            string result = rabbitMQ.RPCRequest("event", "feedback", request.ToString());
 
             Rating rating = JsonConvert.DeserializeObject<Rating>(result);
 

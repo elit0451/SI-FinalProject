@@ -81,8 +81,8 @@ namespace NotificationService
 
         private static void OnStarted()
         {
-            Listener.CreateConsumerChannel("event.add");
-            Listener.CreateConsumerChannel("event.update");
+            Listener.CreateConsumerChannel("event", "add");
+            Listener.CreateConsumerChannel("event", "update");
         }
 
         private static void OnStopping()

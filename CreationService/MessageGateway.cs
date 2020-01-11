@@ -17,38 +17,32 @@ namespace CreationService
             channel = connection.CreateModel();
         }
 
-        internal static void ReceiveQueue(string queueName, EventHandler<BasicDeliverEventArgs> receivedMethod)
+        internal static void ReceiveQueue(string exchangeName, string routingKey, EventHandler<BasicDeliverEventArgs> receivedMethod)
         {
-            channel.QueueDeclare(queue: queueName,
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+            channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Direct);
+
+            var queueName = channel.QueueDeclare().QueueName;
+            channel.QueueBind(queue: queueName,
+                              exchange: exchangeName,
+                              routingKey: routingKey);
 
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += receivedMethod;
-                
+
             channel.BasicConsume(queue: queueName,
                                  autoAck: true,
                                  consumer: consumer);
         }
 
-        internal static void PublishMessage(string queueName, string message)
+        internal static void PublishMessage(string exchangeName, string routingKey, string message)
         {
+            channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Direct);
 
-            channel.QueueDeclare(queue: queueName,
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+            var body = Encoding.UTF8.GetBytes(message);
 
-
-            var body = Encoding.UTF8.GetBytes(message); 
-
-            Console.WriteLine("Publishing to: " + queueName + " - Message: \n" + message);
             channel.BasicPublish(
-                exchange: "", 
-                routingKey: queueName, 
+                exchange: exchangeName,
+                routingKey: routingKey,
                 basicProperties: null,
                 body: body);
         }
