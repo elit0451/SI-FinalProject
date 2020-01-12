@@ -26,17 +26,17 @@ jobs:
       run: docker-compose build && docker-compose push
 
     - name: Update deployment file
-      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<TAG>|'${TAG}'|' $GITHUB_WORKSPACE/k8s-deployment.yml
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<TAG>|'${TAG}'|' $GITHUB_WORKSPACE/k8s-deployment.yaml
 
     - name: Save DigitalOcean kubeconfig
       uses: digitalocean/action-doctl@master
       env:
         DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       with:
-        args: kubernetes cluster kubeconfig show actions-example > $GITHUB_WORKSPACE/.kubeconfig
+        args: kubernetes cluster kubeconfig show si-final-cluster > $GITHUB_WORKSPACE/.kubeconfig
 
     - name: Deploy to DigitalOcean Kubernetes
       run: kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig apply -f $GITHUB_WORKSPACE/k8s-deployment.yaml
 
     - name: Verify deployment
-      run: kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig rollout status deployment/static-example
+      run: kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig rollout status deployment/rating-service
