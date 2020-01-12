@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using EventService.DTOs;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
 
@@ -37,7 +39,7 @@ namespace EventService.Models
             BindParams(applicationCmd);
             await applicationCmd.ExecuteNonQueryAsync();
 
-            EventId = (int) applicationCmd.LastInsertedId;
+            EventId = (int)applicationCmd.LastInsertedId;
         }
 
         public async Task UpdateAsync()
@@ -131,6 +133,34 @@ namespace EventService.Models
             eventObj["Command"] = command;
 
             return eventObj.ToString();
+        }
+
+        public EventDTO ConvertToDTO()
+        {
+            List<LinkDTO> links = new List<LinkDTO>();
+            links.Add(new LinkDTO("http://157.245.26.122.xip.io/event/Rating/" + EventId,
+                "get_rating",
+                "GET"));
+
+            links.Add(new LinkDTO("http://157.245.26.122.xip.io/notification/Notificatioin/" + EventId,
+            "get_notifications",
+            "GET"));
+
+            return new EventDTO()
+            {
+                EventId = this.EventId,
+                Location = this.Location,
+                DriverName = this.DriverName,
+                DriveFrom = this.DriveFrom,
+                DateFrom = this.DateFrom,
+                DateTo = this.DateTo,
+                NumberOfPeople = this.NumberOfPeople,
+                EventType = this.EventType,
+                ResponsibleName = this.ResponsibleName,
+                ResponsiblePhoneNr = this.ResponsiblePhoneNr,
+                Notes = this.Notes,
+                RelatedLinks = links
+            };
         }
     }
 }

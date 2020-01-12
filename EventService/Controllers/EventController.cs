@@ -27,7 +27,7 @@ namespace EventService.Controllers
 
             rabbitMQ.PublishToChannel("event", "add", eventObj.ConvertToJson("add"));
             
-            return new OkObjectResult(eventObj);
+            return new OkObjectResult(eventObj.ConvertToDTO());
         }
     }
 }
