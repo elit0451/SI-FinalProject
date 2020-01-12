@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: driver-service
+  labels:
+    app: driver-service
+spec:
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+  selector:
+    app: driver-service
+  ports:
+    - name: http
+      port: 5001
+      targetPort: http

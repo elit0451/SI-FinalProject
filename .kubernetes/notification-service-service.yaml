@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: notification-service
+  labels:
+    app: notification-service
+spec:
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+  selector:
+    app: notification-service
+  ports:
+    - name: http
+      port: 5003
+      targetPort: http

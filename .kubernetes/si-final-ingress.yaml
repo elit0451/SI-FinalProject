@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: si-final-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - host: 157.245.26.122.xip.io
+    http:
+      paths:
+      - path: /event(/|$)(.*)
+        backend:
+          serviceName: event-service
+          servicePort: 5000
+      - path: /driver(/|$)(.*)
+        backend:
+          serviceName: driver-service
+          servicePort: 5001
+      - path: /location(/|$)(.*)
+        backend:
+          serviceName: location-service
+          servicePort: 5002
+      - path: /notification(/|$)(.*)
+        backend:
+          serviceName: notification-service
+          servicePort: 5003
+      - path: /rabbitmq(/|$)(.*)
+        backend:
+          serviceName: rabbitmq
+          servicePort: 15672
+        

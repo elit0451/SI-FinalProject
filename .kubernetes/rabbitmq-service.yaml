@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: rabbitmq
+  labels:
+    app: rabbitmq
+spec:
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+  selector:
+    app: rabbitmq
+  ports:
+    - name: work
+      port: 5672
+      targetPort: work
+    - name: browser
+      port: 15672
+      targetPort: browser

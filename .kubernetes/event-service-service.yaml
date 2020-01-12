@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: event-service
+  labels:
+    app: event-service
+spec:
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+  selector:
+    app: event-service
+  ports:
+    - name: http
+      port: 5000
+      targetPort: http

@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+  selector:
+    app: mysql
+  ports:
+    - name: work
+      port: 3306
+      targetPort: work

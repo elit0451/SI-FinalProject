@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: location-service
+  labels:
+    app: location-service
+spec:
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+  selector:
+    app: location-service
+  ports:
+    - name: http
+      port: 5002
+      targetPort: http

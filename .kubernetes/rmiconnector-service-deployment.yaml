@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rmiconnector-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rmiconnector-service
+  template:
+    metadata:
+      labels:
+        app: rmiconnector-service
+    spec:
+      containers:
+        - name: rmiconnector-service
+          image: davi7816/testrmiconnector

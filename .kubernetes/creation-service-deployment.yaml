@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: creation-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: creation-service
+  template:
+    metadata:
+      labels:
+        app: creation-service
+    spec:
+      containers:
+        - name: creation-service
+          image: davi7816/testcreationservice
