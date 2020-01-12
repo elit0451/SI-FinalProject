@@ -26,7 +26,7 @@ jobs:
       run: docker-compose build && docker-compose push
 
     - name: Update deployment file
-      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<TAG>|'${TAG}'|' $GITHUB_WORKSPACE/k8s-deployment.yml
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<TAG>|'${TAG}'|' $GITHUB_WORKSPACE/k8s-deployment.yaml
 
     - name: Save DigitalOcean kubeconfig
       uses: digitalocean/action-doctl@master
