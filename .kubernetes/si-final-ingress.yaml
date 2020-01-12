@@ -29,4 +29,8 @@ spec:
         backend:
           serviceName: rabbitmq
           servicePort: 15672
+      - path: /(/|$)(.*)
+        backend:
+          serviceName: webapp
+          servicePort: 80
         
