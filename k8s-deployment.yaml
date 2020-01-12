@@ -68,7 +68,7 @@ spec:
     spec:
       containers:
         - name: notification-service
-          image: davi7816/notificationtry:<TAG>
+          image: davi7816/testnotificationservice:<TAG>
           ports:
             - name: http
               containerPort: 5002
@@ -128,7 +128,7 @@ spec:
     spec:
       containers:
         - name: legacy-service
-          image: davi7816/testlegacy:<TAG>
+          image: davi7816/testlegacy
 ---
 apiVersion: apps/v1
 kind: Deployment
