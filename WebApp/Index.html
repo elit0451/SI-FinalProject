@@ -137,6 +137,14 @@
         </div>
 
         <div class="admin">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link addnav active" href="#" onclick="navChange('addApplicant')">Add Applicant</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link acceptnav" href="#" onclick="navChange('acceptApplicants')">Accept Applicants</a>
+                </li>
+            </ul>
             <div class="newApplicant">
                 <form>
                     <div class="form-group">
@@ -150,6 +158,37 @@
                     <div class="form-group">
                         <label for="driverLicenseNr">License number</label>
                         <input type="text" class="form-control" id="driverLicenseNr" placeholder="010132-000">
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="weekDay1" value="0">
+                        <label class="form-check-label" for="weekDay1">Sunday</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="weekDay2" value="1">
+                        <label class="form-check-label" for="weekDay2">Monday</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="weekDay3" value="2">
+                        <label class="form-check-label" for="weekDay3">Tuesday</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="weekDay4" value="3">
+                        <label class="form-check-label" for="weekDay4">Wednesday</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="weekDay5" value="4">
+                        <label class="form-check-label" for="weekDay5">Thursday</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="weekDay6" value="5">
+                        <label class="form-check-label" for="weekDay6">Friday</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="weekDay7" value="6">
+                        <label class="form-check-label" for="weekDay7">Saturday</label>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success" onclick="addApplication(event)">Add application</button>
                     </div>
                 </form>
             </div>
@@ -257,13 +296,55 @@
                     $("#eventPhoneInfo").text(data.responsiblePhoneNr);
                     $("#eventNotesInfo").text(data.notes);
 
-            setInterval(function () {
-                refreshNotifications(data.eventId);
-            }, 1000);
-        }
+                    setInterval(function () {
+                        refreshNotifications(data.eventId);
+                    }, 1000);
+                }
             })
 
-        e.preventDefault();
+            e.preventDefault();
+        }
+
+        function navChange(navName) {
+            if (navName === "addApplicant") {
+                $(".newApplicant").show();
+                $(".acceptApplicants").hide();
+                $(".addnav").addClass("active");
+                $(".acceptnav").removeClass("active");
+            }
+            else {
+                $(".newApplicant").hide();
+                $(".acceptApplicants").show();
+                $(".addnav").removeClass("active");
+                $(".acceptnav").addClass("active");
+            }
+        }
+
+        function addApplication(e) {
+
+            var weekDays = [];
+            $('.form-check-input').each(function (val, item) {
+                if ($(item).prop('checked'))
+                    weekDays.push(val);
+            })
+            var application = {};
+
+            application.Name = $("#driverName").val();
+            application.DateOfBirth = $("#driverBirthday").val();
+            application.LicenseNumber = $("#driverLicenseNr").val();
+            application.WeekDays = weekDays;
+
+            $.ajax({
+                url: "http://localhost:5001/Application",
+                type: "POST",
+                data: JSON.stringify(application),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                }
+            })
+
+            e.preventDefault();
         }
 
     </script>
