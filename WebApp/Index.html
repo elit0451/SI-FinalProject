@@ -217,6 +217,10 @@
             $(".eventInfo").hide();
             $(".acceptApplicants").hide();
             tabChange('Client');
+
+            setInterval(function () {
+                        refreshApplicants();
+                    }, 1000);
         });
 
         function refreshNotifications(eventid) {
@@ -229,6 +233,24 @@
                         <div class="notification" style="background-color: #DCDDDE; border-bottom: 1px solid #676868; padding: 10px; width: 100%; height: 80px;" onclick="removeNotification(${item.notificationId})">
                             ${item.content}
                         </div>`);
+                    });
+                },
+                dataType: "json"
+            });
+        }
+
+        function refreshApplicants() {
+            $.ajax({
+                url: "http://localhost:5001/Application/",
+                success: function (data) {
+                    console.log(data);
+                    $('.list-group').empty();
+                    data.forEach(function (item, index) {
+                        $('.list-group').append(`
+                        <li class="list-group-item">
+                            ${item.name}
+                            <button type="button" class="btn btn-success" onclick="acceptApplicant(${item.applicationID})">Accept</button>
+                        </li>`);
                     });
                 },
                 dataType: "json"
@@ -345,6 +367,16 @@
             })
 
             e.preventDefault();
+        }
+
+        function acceptApplicant(applicationId) {
+            $.ajax({
+                url: "http://localhost:5001/Application/" + applicationId,
+                type: "PUT",
+                success: function (data) {
+                }
+            })
+            
         }
 
     </script>
