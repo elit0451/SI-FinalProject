@@ -48,14 +48,12 @@
                         <label for="eventLocation">Event location</label>
                         <select class="form-control" id="eventLocation">
                             <option selected disabled>Select a location</option>
-                            <option value="23">test</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="eventPickupLocation">Pick-up location</label>
                         <select class="form-control" id="eventPickupLocation">
                             <option selected disabled>Select a pick-up location</option>
-                            <option value="23">test</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -218,10 +216,26 @@
             $(".acceptApplicants").hide();
             tabChange('Client');
 
+            addLocationsToSelect()
+
             setInterval(function () {
                         refreshApplicants();
                     }, 1000);
         });
+
+        function addLocationsToSelect()
+        {
+            $.ajax({
+                url: "http://157.245.26.122.xip.io/location/Location",
+                success: function (data) {
+                    data.forEach(function (item, index) {
+                        $('#eventLocation').append(`<option value="${item.LocationId}">${item.City} - ${item.LocationCode}</option>`);
+                        $('#eventPickupLocation').append(`<option value="${item.LocationId}">${item.City} - ${item.LocationCode}</option>`);
+                    });
+                },
+                dataType: "json"
+            });
+        }
 
         function refreshNotifications(eventid) {
             $.ajax({
@@ -243,7 +257,6 @@
             $.ajax({
                 url: "http://157.245.26.122.xip.io/driver/Application/",
                 success: function (data) {
-                    console.log(data);
                     $('.list-group').empty();
                     data.forEach(function (item, index) {
                         $('.list-group').append(`
