@@ -225,7 +225,7 @@
 
         function refreshNotifications(eventid) {
             $.ajax({
-                url: "http://localhost:5003/Notification/" + eventid,
+                url: "http://157.245.26.122.xip.io/notification/Notification/" + eventid,
                 success: function (data) {
                     $('.notificationBar').empty();
                     data.forEach(function (item, index) {
@@ -241,7 +241,7 @@
 
         function refreshApplicants() {
             $.ajax({
-                url: "http://localhost:5001/Application/",
+                url: "http://157.245.26.122.xip.io/driver/Application/",
                 success: function (data) {
                     console.log(data);
                     $('.list-group').empty();
@@ -259,7 +259,7 @@
 
         function removeNotification(notificationId) {
             $.ajax({
-                url: "http://localhost:5003/Notification/" + notificationId,
+                url: "http://157.245.26.122.xip.io/notification/Notification/" + notificationId,
                 type: "PUT",
                 success: function (data) {
                 }
@@ -298,7 +298,7 @@
             evnt.Notes = $("#eventNotes").val();
 
             $.ajax({
-                url: "http://localhost:5000/Event",
+                url: "http://157.245.26.122.xip.io/event/Event",
                 type: "POST",
                 data: JSON.stringify(evnt),
                 contentType: "application/json; charset=utf-8",
@@ -357,7 +357,7 @@
             application.WeekDays = weekDays;
 
             $.ajax({
-                url: "http://localhost:5001/Application",
+                url: "http://157.245.26.122.xip.io/driver/Application",
                 type: "POST",
                 data: JSON.stringify(application),
                 contentType: "application/json; charset=utf-8",
@@ -371,7 +371,7 @@
 
         function acceptApplicant(applicationId) {
             $.ajax({
-                url: "http://localhost:5001/Application/" + applicationId,
+                url: "http://157.245.26.122.xip.io/driver/Application/" + applicationId,
                 type: "PUT",
                 success: function (data) {
                 }
