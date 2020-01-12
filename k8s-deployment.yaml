@@ -1,0 +1,227 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3.6.5-management
+          ports:
+            - name: work
+              containerPort: 5672
+            - name: http
+              containerPort: 15672
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: soft2019Backend
+          volumeMounts:
+          - name: mysql-persistent-storage
+            mountPath: /var/lib/mysql
+          ports:
+            - name: work
+              containerPort: 3306
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-service
+  template:
+    metadata:
+      labels:
+        app: notification-service
+    spec:
+      containers:
+        - name: notification-service
+          image: davi7816/notificationtry:<TAG>
+          ports:
+            - name: http
+              containerPort: 5002
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logger-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logger-service
+  template:
+    metadata:
+      labels:
+        app: logger-service
+    spec:
+      containers:
+        - name: logger-service
+          image: davi7816/testloggerservice:<TAG>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: location-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: location-service
+  template:
+    metadata:
+      labels:
+        app: location-service
+    spec:
+      containers:
+        - name: location-service
+          image: davi7816/testlocationservice:<TAG>
+          ports:
+            - name: http
+              containerPort: 5002
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: legacy-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: legacy-service
+  template:
+    metadata:
+      labels:
+        app: legacy-service
+    spec:
+      containers:
+        - name: legacy-service
+          image: davi7816/testlegacy:<TAG>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-service
+  template:
+    metadata:
+      labels:
+        app: event-service
+    spec:
+      containers:
+        - name: event-service
+          image: davi7816/testeventservice:<TAG>
+          ports:
+            - name: http
+              containerPort: 5002
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: driver-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: driver-service
+  template:
+    metadata:
+      labels:
+        app: driver-service
+    spec:
+      containers:
+        - name: driver-service
+          image: davi7816/testdriverservice:<TAG>
+          ports:
+            - name: http
+              containerPort: 5002
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: creation-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: creation-service
+  template:
+    metadata:
+      labels:
+        app: creation-service
+    spec:
+      containers:
+        - name: creation-service
+          image: davi7816/testcreationservice:<TAG>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rmiconnector-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rmiconnector-service
+  template:
+    metadata:
+      labels:
+        app: rmiconnector-service
+    spec:
+      containers:
+        - name: rmiconnector-service
+          image: davi7816/testrmiconnector
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rating-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rating-service
+  template:
+    metadata:
+      labels:
+        app: rating-service
+    spec:
+      containers:
+        - name: rating-service
+          image: davi7816/testratingservice:<TAG>
